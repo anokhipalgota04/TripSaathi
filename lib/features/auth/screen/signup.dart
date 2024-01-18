@@ -11,6 +11,8 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   bool _isLoading = false;
   bool _isPasswordVisible = false;
@@ -20,13 +22,17 @@ class _SignupScreenState extends State<SignupScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _bioController.dispose();
+    _usernameController.dispose();
+
     super.dispose();
   }
 
   void _validateEmail() {
     setState(() {
       final String email = _emailController.text.trim();
-      _emailError = !RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(email);
+      _emailError = !RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+          .hasMatch(email);
     });
   }
 
@@ -57,6 +63,7 @@ class _SignupScreenState extends State<SignupScreen> {
           _buildBackgroundImage(),
           _buildPunchlineText(screenSize),
           _buildGlassmorphismContainer(screenSize),
+          _buildAgreementText(),
         ],
       ),
     );
@@ -78,7 +85,10 @@ class _SignupScreenState extends State<SignupScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Colors.white70.withOpacity(0.0), Colors.white70.withOpacity(0.0)],
+                colors: [
+                  Colors.white70.withOpacity(0.0),
+                  Colors.white70.withOpacity(0.0)
+                ],
               ),
             ),
           ),
@@ -89,10 +99,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Widget _buildPunchlineText(Size screenSize) {
     return Positioned(
-      top: screenSize.height * 0.105,
+      top: screenSize.height * 0.065,
       left: screenSize.width * 0.06,
       child: Text(
-        'Let\'s Get Started!',
+        'Get Started!',
         style: TextStyle(
           color: Colors.black,
           fontSize: screenSize.width * 0.1,
@@ -106,14 +116,17 @@ class _SignupScreenState extends State<SignupScreen> {
     return Center(
       child: Container(
         width: screenSize.width * 0.95,
-        height: screenSize.height * 0.65,
+        height: screenSize.height * 0.72,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.white70.withOpacity(0.4), Colors.white70.withOpacity(0.3)],
+            colors: [
+              Colors.white70.withOpacity(0.4),
+              Colors.white70.withOpacity(0.3)
+            ],
           ),
         ),
         child: ClipRRect(
@@ -125,7 +138,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Colors.white70.withOpacity(0.3), Colors.white70.withOpacity(0.3)],
+                  colors: [
+                    Colors.white70.withOpacity(0.3),
+                    Colors.white70.withOpacity(0.3)
+                  ],
                 ),
               ),
               child: _buildFormFields(screenSize),
@@ -140,9 +156,38 @@ class _SignupScreenState extends State<SignupScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Stack(
+          alignment: Alignment.bottomLeft,
+          children: [
+            CircleAvatar(
+              radius: 64,
+              backgroundImage: AssetImage('assets/images/logo.png'),
+            ),
+            Positioned(
+              bottom: -10,
+              left: 80,
+              child: IconButton(
+                onPressed: () {
+                  // Add your logic for image upload
+                },
+                icon: Icon(Icons.add_a_photo),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: screenSize.height * 0.032),
         _buildTextField(
-          hintText: 'Email',
-          labelText: 'Email',
+          hintText: 'Enter Username',
+          suffixIcon: const Icon(Icons.person),
+          onChanged: (value) {
+            // Add your logic here
+          },
+          keyboardType: TextInputType.text,
+          controller: _usernameController,
+        ),
+        SizedBox(height: screenSize.height * 0.022),
+        _buildTextField(
+          hintText: 'Enter Email',
           errorText: _emailError ? 'Enter a valid email' : null,
           suffixIcon: const Icon(Icons.email_outlined),
           onChanged: (_) => _validateEmail(),
@@ -151,55 +196,40 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
         SizedBox(height: screenSize.height * 0.022),
         _buildTextField(
-          hintText: 'Password',
-          labelText: 'Password',
+          hintText: 'Enter Password',
           suffixIcon: IconButton(
-            icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+            icon: Icon(
+                _isPasswordVisible ? Icons.visibility : Icons.visibility_off),
             onPressed: () {
               setState(() {
                 _isPasswordVisible = !_isPasswordVisible;
               });
             },
           ),
-          onChanged: (_) => _validateEmail(),
+          onChanged: (_) {},
           keyboardType: TextInputType.text,
           controller: _passwordController,
           obscureText: !_isPasswordVisible,
         ),
         SizedBox(height: screenSize.height * 0.022),
+        _buildTextField(
+          hintText: 'Enter Bio',
+          suffixIcon: const Icon(Icons.info),
+          onChanged: (value) {
+            // Add your logic here
+          },
+          keyboardType: TextInputType.text,
+          controller: _bioController,
+        ),
+        SizedBox(height: screenSize.height * 0.022),
         _buildSignupButton(screenSize),
         SizedBox(height: screenSize.height * 0.008),
-        SizedBox(height: screenSize.height * 0.04),
-        const Text(
-          'By signing up you agree to',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-              onTap: () {
-                // Add logic for terms and conditions
-              },
-              child: const Text(
-                'Terms and Conditions',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black54,
-                ),
-              ),
-            ),
-          ],
-        ),
       ],
     );
   }
 
   Widget _buildTextField({
     required String hintText,
-    required String labelText,
     String? errorText,
     required Widget suffixIcon,
     required void Function(String) onChanged,
@@ -213,10 +243,10 @@ class _SignupScreenState extends State<SignupScreen> {
         onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
-          labelText: labelText,
           errorText: errorText,
           suffixIcon: Padding(
-            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
+            padding: EdgeInsets.only(
+                right: MediaQuery.of(context).size.width * 0.00),
             child: suffixIcon,
           ),
           focusedBorder: OutlineInputBorder(
@@ -273,6 +303,37 @@ class _SignupScreenState extends State<SignupScreen> {
             : const CircularProgressIndicator(
                 color: Colors.white,
               ),
+      ),
+    );
+  }
+
+  Widget _buildAgreementText() {
+    return Positioned(
+      bottom: 16,
+      left: 16,
+      right: 16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            'By signing up you agree to',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              // Add logic for terms and conditions
+            },
+            child: const Text(
+              'Terms and Conditions',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
