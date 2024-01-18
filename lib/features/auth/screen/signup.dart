@@ -11,27 +11,16 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _isLoading = false;
   bool _isPasswordVisible = false;
-  bool _passwordsMatch = true;
-  bool _confirmPasswordError = false;
   bool _emailError = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
     super.dispose();
-  }
-
-  void _checkPasswordMatch() {
-    setState(() {
-      _passwordsMatch = _passwordController.text == _confirmPasswordController.text;
-      _confirmPasswordError = _confirmPasswordController.text.isNotEmpty && !_passwordsMatch;
-    });
   }
 
   void _validateEmail() {
@@ -43,9 +32,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void signUpUser() async {
     _validateEmail();
-    _checkPasswordMatch();
 
-    if (!_emailError && _passwordsMatch) {
+    if (!_emailError) {
       setState(() {
         _isLoading = true;
       });
@@ -87,7 +75,7 @@ class _SignupScreenState extends State<SignupScreen> {
           filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
           child: Container(
             decoration: BoxDecoration(
-              gradient:  LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [Colors.white70.withOpacity(0.0), Colors.white70.withOpacity(0.0)],
@@ -122,7 +110,7 @@ class _SignupScreenState extends State<SignupScreen> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          gradient:  LinearGradient(
+          gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [Colors.white70.withOpacity(0.4), Colors.white70.withOpacity(0.3)],
@@ -134,7 +122,7 @@ class _SignupScreenState extends State<SignupScreen> {
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
               decoration: BoxDecoration(
-                gradient:  LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [Colors.white70.withOpacity(0.3), Colors.white70.withOpacity(0.3)],
@@ -173,20 +161,10 @@ class _SignupScreenState extends State<SignupScreen> {
               });
             },
           ),
-          onChanged: (_) => _checkPasswordMatch(),
+          onChanged: (_) => _validateEmail(),
           keyboardType: TextInputType.text,
           controller: _passwordController,
           obscureText: !_isPasswordVisible,
-        ),
-        SizedBox(height: screenSize.height * 0.022),
-        _buildTextField(
-          hintText: 'Confirm Password',
-          labelText: 'Confirm Password',
-          errorText: _confirmPasswordError ? 'Passwords do not match' : null,
-          onChanged: (_) => _checkPasswordMatch(),
-          keyboardType: TextInputType.text,
-          controller: _confirmPasswordController,
-          suffixIcon: const Icon(Icons.visibility),
         ),
         SizedBox(height: screenSize.height * 0.022),
         _buildSignupButton(screenSize),

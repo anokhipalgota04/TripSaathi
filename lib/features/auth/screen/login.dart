@@ -166,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 borderRadius: BorderRadius.circular(20),
                               ),
+
                               filled: true,
                               fillColor: Colors.white70.withOpacity(0.3),
                               contentPadding: EdgeInsets.symmetric(
@@ -238,32 +239,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         //login button
 
-                        InkWell(
-                          onTap: loginUser,
-                          child: Container(
-                            width: screenSize.width * 0.8,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
-                                vertical: screenSize.height * 0.015),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              gradient: const LinearGradient(
-                                colors: [Colors.purpleAccent, Colors.red],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                        GestureDetector(
+                          child: InkWell(
+                            onTap: loginUser,
+                            child: Container(
+                              width: screenSize.width * 0.8,
+                              alignment: Alignment.center, 
+                              padding: EdgeInsets.symmetric(
+                                  vertical: screenSize.height * 0.015),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: const LinearGradient(
+                                  colors: [Colors.purpleAccent, Colors.red],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
                               ),
-                            ),
-                            child: !_isLoading
-                                ? const Text(
-                                    'Log in',
-                                    style: TextStyle(
+                              child: !_isLoading
+                                  ? const Text(
+                                      'Log in',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : const CircularProgressIndicator(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold,
                                     ),
-                                  )
-                                : const CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
+                            ),
                           ),
                         ),
                         SizedBox(
