@@ -1,73 +1,95 @@
+import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:gonomad/resources/auth_methods.dart';
+import 'package:gonomad/utils/utils.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SignupScreenState extends State<SignupScreen>
+    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+  late Future<void> _preloadScreen;
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  Uint8List? _image;
 
   bool _isLoading = false;
   bool _isPasswordVisible = false;
   bool _emailError = false;
 
   @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _bioController.dispose();
-    _usernameController.dispose();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+    _preloadScreen = _preloadData();
+  }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
-  void _validateEmail() {
-    setState(() {
-      final String email = _emailController.text.trim();
-      _emailError = !RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-          .hasMatch(email);
-    });
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _preloadData();
+    }
   }
 
-  void signUpUser() async {
-    _validateEmail();
-
-    if (!_emailError) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      // Add your signup logic here
-
-      setState(() {
-        _isLoading = false;
-      });
-    }
+  Future<void> _preloadData() async {
+    await Future.delayed(const Duration(seconds: 2));
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final Size screenSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          _buildBackgroundImage(),
-          _buildPunchlineText(screenSize),
-          _buildGlassmorphismContainer(screenSize),
-          _buildAgreementText(),
-        ],
-      ),
+    return FutureBuilder(
+      future: _preloadScreen,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          );
+        } else {
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Stack(
+              children: [
+                _buildBackgroundImage(),
+                _buildPunchlineText(screenSize),
+                _buildGlassmorphismContainer(screenSize),
+                _buildAgreementText(),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   Widget _buildBackgroundImage() {
     return Container(
@@ -159,17 +181,20 @@ class _SignupScreenState extends State<SignupScreen> {
         Stack(
           alignment: Alignment.bottomLeft,
           children: [
-            CircleAvatar(
-              radius: 64,
-              backgroundImage: AssetImage('assets/images/logo.png'),
-            ),
+            _image != null
+                ? CircleAvatar(
+                    radius: 64,
+                    backgroundImage: MemoryImage(_image!),
+                  )
+                : CircleAvatar(
+                    radius: 64,
+                    backgroundImage: AssetImage('assets/images/default.png'),
+                  ),
             Positioned(
               bottom: -10,
               left: 80,
               child: IconButton(
-                onPressed: () {
-                  // Add your logic for image upload
-                },
+                onPressed: selectImage,
                 icon: Icon(Icons.add_a_photo),
               ),
             ),
@@ -278,31 +303,31 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Widget _buildSignupButton(Size screenSize) {
+    bool isButtonEnabled = _usernameController.text.isNotEmpty &&
+        _emailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty &&
+        _bioController.text.isNotEmpty &&
+        _image != null;
+
     return InkWell(
-      onTap: signUpUser,
+      onTap: isButtonEnabled ? signUpUser : null,
       child: Container(
         width: screenSize.width * 0.8,
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: screenSize.height * 0.015),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          gradient: const LinearGradient(
-            colors: [Colors.purpleAccent, Colors.red],
+          gradient: LinearGradient(
+            colors: isButtonEnabled
+                ? [Colors.purpleAccent, Colors.red]
+                : [Colors.grey.withOpacity(0.5), Colors.grey.withOpacity(0.5)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
-        child: !_isLoading
-            ? const Text(
-                'Sign Up',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            : const CircularProgressIndicator(
-                color: Colors.white,
-              ),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : const Text('Sign Up'),
       ),
     );
   }
@@ -336,5 +361,52 @@ class _SignupScreenState extends State<SignupScreen> {
         ],
       ),
     );
+  }
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
+  void _validateEmail() {
+    setState(() {
+      final String email = _emailController.text.trim();
+      _emailError = !RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+          .hasMatch(email);
+    });
+  }
+
+  void signUpUser() async {
+    // _validateEmail();
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signUpUsers(
+      username: _usernameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+      bio: _bioController.text,
+      file: _image!,
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != 'success') {
+      showSnackBar(res,context);
+    }
+    if (!_emailError) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Add your signup logic here
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }

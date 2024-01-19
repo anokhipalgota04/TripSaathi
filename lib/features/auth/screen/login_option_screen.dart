@@ -210,7 +210,7 @@ Widget buildFrostedButton(
                 buttonText,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 19,
+                  fontSize: 17,
                   color: Colors.white70,
                 ),
               ),
