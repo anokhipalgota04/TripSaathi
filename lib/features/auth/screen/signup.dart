@@ -395,7 +395,7 @@ class _SignupScreenState extends State<SignupScreen>
       _isLoading = false;
     });
     if (res != 'success') {
-      showSnackBar(res,context);
+      showSnackBar(context,res);
     }
     if (!_emailError) {
       setState(() {
