@@ -15,11 +15,14 @@ class _InstagramHomeState extends State<InstagramHome> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
-          'Instagram',
+          'Connect',textAlign: TextAlign.center,
+
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Billabong',
             fontSize: 32.0,
+            
+            
           ),
         ),
         actions: [

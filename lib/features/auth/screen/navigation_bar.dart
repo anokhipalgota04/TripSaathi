@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Text(
           'Page ${_selectedIndex + 1}',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
@@ -45,13 +45,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildBottomNavigationBar() {
     return ClipRRect(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(30),bottom: Radius.circular(30),),
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(30),bottom: Radius.circular(30),),
       child: Container(
 
         decoration: BoxDecoration(
 
           color: Colors.white.withOpacity(0.2),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30), bottom: Radius.circular(30),),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30), bottom: Radius.circular(30),),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
@@ -93,11 +93,11 @@ class _MyHomePageState extends State<MyHomePage> {
         height: 60,
         child: Center(
           child: AnimatedContainer(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeOutQuad,
             decoration: isSelected
                 ? BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: [
                   Color(0xFF990099), // Deep Purple
                   Color(0xFFff1493), // Deep Pink

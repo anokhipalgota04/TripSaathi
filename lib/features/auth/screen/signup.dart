@@ -60,7 +60,7 @@ class _SignupScreenState extends State<SignupScreen>
       future: _preloadScreen,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
@@ -186,7 +186,7 @@ class _SignupScreenState extends State<SignupScreen>
                     radius: 64,
                     backgroundImage: MemoryImage(_image!),
                   )
-                : CircleAvatar(
+                : const CircleAvatar(
                     radius: 64,
                     backgroundImage: AssetImage('assets/images/default.png'),
                   ),
@@ -195,7 +195,7 @@ class _SignupScreenState extends State<SignupScreen>
               left: 80,
               child: IconButton(
                 onPressed: selectImage,
-                icon: Icon(Icons.add_a_photo),
+                icon: const Icon(Icons.add_a_photo),
               ),
             ),
           ],
@@ -395,7 +395,7 @@ class _SignupScreenState extends State<SignupScreen>
       _isLoading = false;
     });
     if (res != 'success') {
-      showSnackBar(context,res);
+      showSnackBar(res,context);
     }
     if (!_emailError) {
       setState(() {
@@ -410,3 +410,4 @@ class _SignupScreenState extends State<SignupScreen>
     }
   }
 }
+

@@ -1,6 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:gonomad/features/auth/screen/home_feed/home.dart';
+import 'package:gonomad/features/auth/screen/navigation_bar.dart';
+import 'package:gonomad/resources/auth_methods.dart';
+import 'package:gonomad/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,12 +23,23 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-
-    // Add your login logic here
-
-    setState(() {
+    String res = await AuthMethods().loginInUsers(
+        email: _emailController.text,
+       password: _passwordController.text
+       ); 
+    if (res == "success") {
+     
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) =>  InstagramHome()));
+    } else {
+      // Show error message
+      showSnackBar(res, context);
+       setState(() {
       _isLoading = false;
     });
+    }
+     
+
   }
 
   @override
@@ -44,35 +59,28 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           // Background image
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/Spline1.jpeg'),
-                fit: BoxFit.cover,
-                
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/Spline1.jpeg'),
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-
-
-            child: ClipRRect(
-                //borderRadius: BorderRadius.circular(20),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.white70.withOpacity(0.0),
-                          Colors.white70.withOpacity(0.0),
-                        ],
-                      ),
-                    ),
-
-                  )
-                )
-            )
-          ),
+              child: ClipRRect(
+                  //borderRadius: BorderRadius.circular(20),
+                  child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Colors.white70.withOpacity(0.0),
+                              Colors.white70.withOpacity(0.0),
+                            ],
+                          ),
+                        ),
+                      )))),
           // Welcome back text
           Positioned(
             top: screenSize.height * 0.105,
@@ -138,9 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: screenSize.height * 0.027,
                         ),
 
+                        //email textfield
 
-                       //email textfield
-                       
                         SizedBox(
                           width: screenSize.width * 0.8,
                           child: TextField(
@@ -166,7 +173,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-
                               filled: true,
                               fillColor: Colors.white70.withOpacity(0.3),
                               contentPadding: EdgeInsets.symmetric(
@@ -181,8 +187,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: screenSize.height * 0.022,
                         ),
-
-
 
                         //password textfield
                         SizedBox(
@@ -244,7 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: loginUser,
                             child: Container(
                               width: screenSize.width * 0.8,
-                              alignment: Alignment.center, 
+                              alignment: Alignment.center,
                               padding: EdgeInsets.symmetric(
                                   vertical: screenSize.height * 0.015),
                               decoration: BoxDecoration(
@@ -274,8 +278,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
 
                         //forgot password
-
-                       
 
                         //terms and cond text
                         SizedBox(
