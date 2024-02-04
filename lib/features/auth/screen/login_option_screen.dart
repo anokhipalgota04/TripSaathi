@@ -24,15 +24,13 @@ class _BackgroundVideoState extends State<BackgroundVideo> {
   late Future<void> _initializeVideoPlayerFuture;
   final List<String> videoPaths = [
     'assets/images/1.mp4',
-    //'assets/images/2.mp4',
+    'assets/images/2.mp4',
     'assets/images/3.mp4',
     'assets/images/4.mp4',
     'assets/images/5.mp4',
     'assets/images/6.mp4',
     'assets/images/7.mp4',
-    'assets/images/9.mp4',
-    'assets/images/11.mp4',
-    'assets/images/13.mp4',
+    
   ];
 
   @override

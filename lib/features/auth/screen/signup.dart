@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:gonomad/features/auth/screen/home_feed/home.dart';
 import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
@@ -48,6 +51,9 @@ class _SignupScreenState extends State<SignupScreen>
   }
 
   Future<void> _preloadData() async {
+    // ignore: unused_local_variable
+    BuildContext context = this.context;
+
     await Future.delayed(const Duration(seconds: 2));
   }
 
@@ -395,8 +401,12 @@ class _SignupScreenState extends State<SignupScreen>
       _isLoading = false;
     });
     if (res != 'success') {
-      showSnackBar(res,context);
+      showSnackBar(res, context);
+    } else {
+       Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => InstagramHome()));
     }
+
     if (!_emailError) {
       setState(() {
         _isLoading = true;
@@ -410,4 +420,3 @@ class _SignupScreenState extends State<SignupScreen>
     }
   }
 }
-
