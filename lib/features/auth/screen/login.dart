@@ -3,7 +3,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gonomad/features/auth/screen/home_feed/home.dart';
+
+import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/utils/utils.dart';
 
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text, password: _passwordController.text);
     if (res == "success") {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => InstagramHome()));
+          context, MaterialPageRoute(builder: (context) => const Personalfeed()));
     } else {
       // Show error message
       showSnackBar(res, context);

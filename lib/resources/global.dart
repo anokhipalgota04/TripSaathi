@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gonomad/features/auth/screen/add_post.dart';
-import 'package:gonomad/features/auth/screen/home_feed/home.dart';
+//import 'package:gonomad/features/auth/screen/home_feed/home.dart';
+import 'package:gonomad/features/auth/screen/home_feed/personal_feed.dart';
 
 const homeScreenItems = [
-  InstagramHome(),
+  FeedScreen(),
   Text('community'),
   AddPostScreen(),
   Text('maps'),

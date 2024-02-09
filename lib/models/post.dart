@@ -8,7 +8,7 @@ class Post {
   final dynamic datePublished; // Adjusted data type to dynamic
   final String postUrl;
   final String profileImage;
-  final likes; // Adjusted data type to dynamic
+  final dynamic likes; // Adjusted data type to dynamic
 
   Post({
     required this.description,

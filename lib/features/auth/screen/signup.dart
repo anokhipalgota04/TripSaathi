@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:gonomad/features/auth/screen/home_feed/home.dart';
+import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
@@ -404,7 +405,7 @@ class _SignupScreenState extends State<SignupScreen>
       showSnackBar(res, context);
     } else {
        Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => InstagramHome()));
+          context, MaterialPageRoute(builder: (context) => const Personalfeed()));
     }
 
     if (!_emailError) {
