@@ -1,8 +1,8 @@
-import 'package:firebase_app_check/firebase_app_check.dart';
+//import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
-import 'package:gonomad/features/auth/screen/home_feed/home.dart';
+//import 'package:gonomad/features/auth/screen/home_feed/home.dart';
 import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 
 import 'package:gonomad/features/auth/screen/login_option_screen.dart';

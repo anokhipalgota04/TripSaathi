@@ -21,7 +21,7 @@ class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final User? user = Provider.of<UserProvider>(context).getUser;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Card(
@@ -37,10 +37,17 @@ class _PostCardState extends State<PostCard> {
               padding: const EdgeInsets.fromLTRB(16.0, 2.0, 8.0, 8.0),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 21.0,
-                    backgroundImage: NetworkImage(widget.snap['profileImage']),
+                  CachedNetworkImage(
+                    imageUrl: widget.snap['profileImage'],
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                      radius: 21.0,
+                      backgroundImage: imageProvider,
+                    ),
+//  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.error), // Widget to show when loading fails
                   ),
+
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -51,9 +58,71 @@ class _PostCardState extends State<PostCard> {
                       ),
                     ),
                   ),
+
+                  //delete ppost
                   IconButton(
                     icon: const Icon(Icons.more_vert),
-                    onPressed: () => _showOptionsDialog(context),
+                    onPressed: () {
+                      // Get the UID of the current user
+                      String? currentUserUid =
+                          Provider.of<UserProvider>(context, listen: false)
+                              .getUser
+                              ?.uid;
+
+                      // Get the UID associated with the post
+                      String postUid = widget.snap['uid'];
+
+                      // Check if the current user uploaded the picture
+                      bool isCurrentUserOwner = postUid == currentUserUid;
+
+                      // Show the dialog with appropriate options
+                      showDialog(
+                        context: context,
+                        builder: ((context) => Dialog(
+                              child: ListView(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                shrinkWrap: true,
+                                children: [
+                                  if (isCurrentUserOwner) // Show delete option only if the current user uploaded the picture
+                                    InkWell(
+                                      onTap: () async {
+                                        FirestoreMethods()
+                                            .deletePost(widget.snap['postId']);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12,
+                                        ),
+                                        child: Text(
+                                          'Delete Post',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  if (!isCurrentUserOwner)
+                                    InkWell(
+                                      onTap: () {
+                                        // Implement your report functionality here
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12,
+                                        ),
+                                        child: Text(
+                                          'Report Post',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            )),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -61,7 +130,7 @@ class _PostCardState extends State<PostCard> {
             GestureDetector(
               onDoubleTap: () async {
                 await FirestoreMethods().likePost(
-                    widget.snap['postId'], user.uid, widget.snap['likes']);
+                    widget.snap['postId'], user!.uid, widget.snap['likes']);
                 setState(() {
                   isLikeAnimating = true;
                 });
@@ -70,7 +139,7 @@ class _PostCardState extends State<PostCard> {
                 alignment: Alignment.center,
                 children: [
                   SizedBox(
-                    height: 400,
+                    height: 350,
 
                     width: double.infinity, // Adjust the height as needed
                     child: ClipRRect(
@@ -83,11 +152,11 @@ class _PostCardState extends State<PostCard> {
                           child: SizedBox(
                             width: 24.0,
                             height: 24.0,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 4.0,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.black), // iOS style color
-                            ),
+                            // child: CircularProgressIndicator(
+                            //   strokeWidth: 4.0,
+                            //   valueColor: AlwaysStoppedAnimation<Color>(
+                            //       Colors.black), // iOS style color
+                            // ),
                           ),
                         ),
                         errorWidget: (context, url, error) => const Icon(
@@ -125,7 +194,7 @@ class _PostCardState extends State<PostCard> {
             Row(
               children: [
                 LikeAnimation(
-                  isAnimating: widget.snap['likes'].contains(user.uid),
+                  isAnimating: widget.snap['likes'].contains(user!.uid),
                   smallLike: true,
                   child: IconButton(
                     onPressed: () async {
@@ -216,17 +285,17 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  void _showOptionsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Options for the post'),
-        // content: const Text(''),
-        actions: [
-          TextButton(onPressed: () {}, child: const Text('Edit')),
-          TextButton(onPressed: () {}, child: const Text('Delete')),
-        ],
-      ),
-    );
-  }
+  // void _showOptionsDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Options for the post'),
+  //       // content: const Text(''),
+  //       actions: [
+  //         TextButton(onPressed: () {}, child: const Text('Edit')),
+  //         TextButton(onPressed: () {}, child: const Text('Delete')),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

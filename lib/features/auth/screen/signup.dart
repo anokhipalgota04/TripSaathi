@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:gonomad/features/auth/screen/home_feed/home.dart';
 import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/utils/utils.dart';
@@ -34,13 +33,13 @@ class _SignupScreenState extends State<SignupScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _preloadScreen = _preloadData();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -371,7 +370,7 @@ class _SignupScreenState extends State<SignupScreen>
   }
 
   void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
+    Uint8List? img = await pickAndCompressImage(ImageSource.gallery);
     setState(() {
       _image = img;
     });
@@ -404,8 +403,8 @@ class _SignupScreenState extends State<SignupScreen>
     if (res != 'success') {
       showSnackBar(res, context);
     } else {
-       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Personalfeed()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const Personalfeed()));
     }
 
     if (!_emailError) {

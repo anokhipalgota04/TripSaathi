@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gonomad/models/user.dart';
 import 'package:gonomad/providers/user_provider.dart';
@@ -7,6 +7,7 @@ import 'package:gonomad/resources/firestore_methods.dart';
 import 'package:gonomad/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
   bool _isLoading = false;
+
   void postImage(
     String uid,
     String username,
@@ -71,7 +73,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               padding: const EdgeInsets.all(20),
               onPressed: () async {
                 Navigator.pop(context);
-                Uint8List file = await pickImage(ImageSource.camera);
+                Uint8List? file = await pickAndCompressImage(ImageSource.camera);
                 setState(() {
                   _file = file;
                 });
@@ -81,7 +83,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             SimpleDialogOption(
               onPressed: () async {
                 Navigator.pop(context);
-                Uint8List file = await pickImage(ImageSource.gallery);
+                Uint8List? file = await pickAndCompressImage(ImageSource.gallery);
                 setState(() {
                   _file = file;
                 });
@@ -114,7 +116,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final User? user = Provider.of<UserProvider>(context).getUser;
 
     return Scaffold(
       backgroundColor: Colors.white70,
@@ -122,15 +124,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
         backgroundColor: Colors.white70,
         elevation: 2,
         title: const Text('Posts'),
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back),
-        //   onPressed: () {
-        //     //Navigator.pop(context);
-        //   },
-        // ),
         actions: [
           TextButton(
-            onPressed: () => postImage(user.uid, user.username, user.photoUrl),
+            onPressed: () => postImage(user!.uid, user.username, user.photoUrl),
             child: const Text(
               "Post",
               style: TextStyle(
@@ -143,7 +139,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           children: [
             _isLoading
@@ -157,10 +152,23 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(user.photoUrl),
-                  radius: 30,
-                ),
+
+ CachedNetworkImage(
+                    imageUrl: user!.photoUrl,
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: imageProvider,
+                    ),
+//  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.error), // Widget to show when loading fails
+                  ),
+
+
+                // CircleAvatar(
+                //   backgroundImage: NetworkImage(user.photoUrl),
+                //   radius: 30,
+                // ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.66,
                   child: TextField(
