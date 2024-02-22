@@ -44,8 +44,8 @@ class _PostCardState extends State<PostCard> {
                       backgroundImage: imageProvider,
                     ),
 //  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
-                    errorWidget: (context, url, error) =>
-                        Icon(Icons.error), // Widget to show when loading fails
+                    errorWidget: (context, url, error) => const Icon(
+                        Icons.error), // Widget to show when loading fails
                   ),
 
                   Expanded(
@@ -53,7 +53,8 @@ class _PostCardState extends State<PostCard> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         widget.snap['username'],
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 16.5, fontWeight: FontWeight.bold),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -96,7 +97,7 @@ class _PostCardState extends State<PostCard> {
                                         padding: const EdgeInsets.symmetric(
                                           vertical: 12,
                                         ),
-                                        child: Text(
+                                        child: const Text(
                                           'Delete Post',
                                           textAlign: TextAlign.center,
                                         ),
@@ -112,7 +113,7 @@ class _PostCardState extends State<PostCard> {
                                         padding: const EdgeInsets.symmetric(
                                           vertical: 12,
                                         ),
-                                        child: Text(
+                                        child: const Text(
                                           'Report Post',
                                           textAlign: TextAlign.center,
                                         ),
@@ -248,16 +249,20 @@ class _PostCardState extends State<PostCard> {
                 children: [
                   Text(
                     '${widget.snap['likes'].length} likes',
-                    style: const TextStyle(fontWeight: FontWeight.w800),
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w900),
                   ),
                   Text.rich(
                     TextSpan(
                       children: [
                         TextSpan(
                           text: widget.snap['username'],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        TextSpan(text: ' ${widget.snap['description']}'),
+                        TextSpan(
+                            text: ' ${widget.snap['description']}',
+                            style: TextStyle(fontSize: 15)),
                       ],
                     ),
                   ),

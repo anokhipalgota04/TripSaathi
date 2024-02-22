@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +7,9 @@ import 'package:gonomad/models/user.dart';
 import 'package:gonomad/providers/user_provider.dart';
 import 'package:gonomad/resources/firestore_methods.dart';
 import 'package:gonomad/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -73,7 +75,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
               padding: const EdgeInsets.all(20),
               onPressed: () async {
                 Navigator.pop(context);
-                Uint8List? file = await pickAndCompressImage(ImageSource.camera);
+                Uint8List? file =
+                    await pickAndCompressImage(ImageSource.camera);
                 setState(() {
                   _file = file;
                 });
@@ -83,7 +86,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
             SimpleDialogOption(
               onPressed: () async {
                 Navigator.pop(context);
-                Uint8List? file = await pickAndCompressImage(ImageSource.gallery);
+                Uint8List? file =
+                    await pickAndCompressImage(ImageSource.gallery);
                 setState(() {
                   _file = file;
                 });
@@ -121,8 +125,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
-        backgroundColor: Colors.white70,
-        elevation: 2,
+        backgroundColor: Colors.white,
+        elevation: 0,
         title: const Text('Posts'),
         actions: [
           TextButton(
@@ -153,17 +157,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   height: 30,
                 ),
 
- CachedNetworkImage(
-                    imageUrl: user!.photoUrl,
-                    imageBuilder: (context, imageProvider) => CircleAvatar(
-                      radius: 30.0,
-                      backgroundImage: imageProvider,
-                    ),
-//  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
-                    errorWidget: (context, url, error) =>
-                        Icon(Icons.error), // Widget to show when loading fails
+                CachedNetworkImage(
+                  imageUrl: user!.photoUrl,
+                  imageBuilder: (context, imageProvider) => CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: imageProvider,
                   ),
-
+//  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
+                  errorWidget: (context, url, error) => const Icon(
+                      Icons.error), // Widget to show when loading fails
+                ),
 
                 // CircleAvatar(
                 //   backgroundImage: NetworkImage(user.photoUrl),
@@ -173,9 +176,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   width: MediaQuery.of(context).size.width * 0.66,
                   child: TextField(
                     controller: _descriptionController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Write your caption...',
-                      hintStyle: TextStyle(
+                      hintStyle: GoogleFonts.kaushanScript(
                         color: Colors.black,
                         fontSize: 20,
                       ),

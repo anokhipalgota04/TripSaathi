@@ -1,23 +1,35 @@
+import 'dart:ui'; // Import for using BackdropFilter
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import for SystemChrome
 import 'package:gonomad/widgets/post_card.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Set the status bar color to transparent and icon brightness to dark
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     return Scaffold(
+      extendBodyBehindAppBar: true, // Extend body behind the AppBar
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        title: const Text(
-          'Connect',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Billabong',
-            fontSize: 32.0,
+        backgroundColor: Colors.transparent, // Make the AppBar transparent
+        elevation: 1, // Remove the elevation
+        title: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 18),
+            child: Text(
+              'Connect',
+              style: GoogleFonts.kaushanScript(
+                color: Colors.black,
+                fontSize: 32.0,
+              ),
+            ),
           ),
         ),
         actions: [
@@ -26,21 +38,37 @@ class FeedScreen extends StatelessWidget {
             icon: const Icon(
               Icons.messenger_outline_rounded,
             ),
+            color: Colors.black, // Set the icon color to black
           ),
         ],
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 9,
+              sigmaY: 9,
+            ), // Adjust the sigmaX and sigmaY values for blur intensity
+            child: Container(
+              color: Colors.white.withOpacity(0.7),
+              // Adjust opacity as needed
+            ),
+          ),
+        ),
       ),
+
+      //drawer
+
+      drawer:
+          const Drawer(), //DrawerContent(), // Use the DrawerContent widget here
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: null
-            );
+            return const Center(child: CircularProgressIndicator());
           }
           return ListView.builder(
             physics:
-                AlwaysScrollableScrollPhysics(), // or AlwaysScrollableScrollPhysics()
+                const AlwaysScrollableScrollPhysics(), // or AlwaysScrollableScrollPhysics()
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               final snap = snapshot.data!.docs[index].data();

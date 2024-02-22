@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -60,6 +62,8 @@ class _PersonalfeedState extends State<Personalfeed> {
 
     if (user != null) {
       return Scaffold(
+        resizeToAvoidBottomInset:
+            false, // Prevents resizing when keyboard appears
         body: Stack(
           children: [
             PageView(
@@ -74,11 +78,11 @@ class _PersonalfeedState extends State<Personalfeed> {
               right: 0,
               child: ClipRect(
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                   child: Container(
-                    height: 78,
+                    height: 85,
                     decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.35),
+                      color: Colors.white.withOpacity(0.35),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.white.withOpacity(0.3),
@@ -89,7 +93,7 @@ class _PersonalfeedState extends State<Personalfeed> {
                       ],
                     ),
                     child: CupertinoTabBar(
-                      height: 78,
+                      height: 85,
                       border: Border(
                         top: BorderSide(
                           color: Colors.grey.withOpacity(0.2),
@@ -101,19 +105,23 @@ class _PersonalfeedState extends State<Personalfeed> {
                       items: [
                         BottomNavigationBarItem(
                           icon: Icon(Icons.home_rounded,
-                              color: _page == 0 ? Colors.black : Colors.black54),
+                              color:
+                                  _page == 0 ? Colors.black : Colors.black54),
                         ),
                         BottomNavigationBarItem(
                           icon: Icon(Icons.group,
-                              color: _page == 1 ? Colors.black : Colors.black54),
+                              color:
+                                  _page == 1 ? Colors.black : Colors.black54),
                         ),
                         BottomNavigationBarItem(
                           icon: Icon(Icons.add_box_outlined,
-                              color: _page == 2 ? Colors.black : Colors.black54),
+                              color:
+                                  _page == 2 ? Colors.black : Colors.black54),
                         ),
                         BottomNavigationBarItem(
                           icon: Icon(Icons.map,
-                              color: _page == 3 ? Colors.black : Colors.black54),
+                              color:
+                                  _page == 3 ? Colors.black : Colors.black54),
                         ),
                         BottomNavigationBarItem(
                           icon: CircleAvatar(
@@ -133,11 +141,7 @@ class _PersonalfeedState extends State<Personalfeed> {
         ),
       );
     } else {
-      return const Scaffold(
-        body: Center(
-          child:  Text('User not found'),
-        ),
-      );
+      return Container();
     }
   }
 

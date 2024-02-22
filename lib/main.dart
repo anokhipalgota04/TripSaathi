@@ -9,6 +9,7 @@ import 'package:gonomad/features/auth/screen/login_option_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:gonomad/providers/user_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          textTheme: GoogleFonts.poppinsTextTheme(),
+        ),
         debugShowCheckedModeBanner: false,
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
 import 'dart:async';
 import 'dart:typed_data';
@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -131,11 +132,13 @@ class _SignupScreenState extends State<SignupScreen>
       left: screenSize.width * 0.06,
       child: Text(
         'Get Started!',
-        style: TextStyle(
-          color: Colors.black,
+        style: GoogleFonts.dmSerifDisplay(color: Colors.black,
           fontSize: screenSize.width * 0.1,
-          fontWeight: FontWeight.bold,
-        ),
+          fontWeight: FontWeight.bold,)
+       
+          
+          
+       
       ),
     );
   }
@@ -219,6 +222,7 @@ class _SignupScreenState extends State<SignupScreen>
         SizedBox(height: screenSize.height * 0.022),
         _buildTextField(
           hintText: 'Enter Email',
+          
           errorText: _emailError ? 'Enter a valid email' : null,
           suffixIcon: const Icon(Icons.email_outlined),
           onChanged: (_) => _validateEmail(),
@@ -333,7 +337,7 @@ class _SignupScreenState extends State<SignupScreen>
         ),
         child: _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : const Text('Sign Up'),
+            :  Text('Sign Up',style: GoogleFonts.josefinSans(),),
       ),
     );
   }
