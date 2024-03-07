@@ -401,14 +401,14 @@ class _SignupScreenState extends State<SignupScreen>
       file: _image!,
     );
 
-    setState(() {
+  setState(() { 
       _isLoading = false;
     });
     if (res != 'success') {
       showSnackBar(res, context);
     } else {
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const Personalfeed()));
+          MaterialPageRoute(builder: (context) => const PersonalFeed()));
     }
 
     if (!_emailError) {

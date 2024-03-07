@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text, password: _passwordController.text);
     if (res == "success") {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Personalfeed()));
+          context, MaterialPageRoute(builder: (context) => const PersonalFeed()));
     } else {
       // Show error message
       showSnackBar(res, context);

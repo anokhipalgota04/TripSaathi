@@ -52,15 +52,7 @@ class _BackgroundVideoState extends State<BackgroundVideo> {
     _initializeVideoPlayerFuture = _videoPlayerController.initialize();
   }
 
-  @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: SystemUiOverlay.values,
-    );
-    super.dispose();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +145,15 @@ class _BackgroundVideoState extends State<BackgroundVideo> {
         ],
       ),
     );
+  }
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
+    super.dispose();
   }
 }
 

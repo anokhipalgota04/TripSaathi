@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gonomad/models/user.dart';
 import 'package:gonomad/providers/user_provider.dart';
 import 'package:gonomad/resources/firestore_methods.dart';
+import 'package:gonomad/widgets/comments.dart';
 import 'package:gonomad/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -103,6 +104,7 @@ class _PostCardState extends State<PostCard> {
                                         ),
                                       ),
                                     ),
+                                    //reporting post option
                                   if (!isCurrentUserOwner)
                                     InkWell(
                                       onTap: () {
@@ -219,7 +221,9 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+              
+              onPressed: (){},
+              //    onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CommentsScreen())),
                   icon: const Icon(
                     Icons.comment_outlined,
                     size: 30,

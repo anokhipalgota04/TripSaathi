@@ -24,7 +24,7 @@ class FeedScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 18),
             child: Text(
-              'Connect',
+              'Tripsaathe',
               style: GoogleFonts.kaushanScript(
                 color: Colors.black,
                 fontSize: 32.0,
@@ -60,7 +60,12 @@ class FeedScreen extends StatelessWidget {
       drawer:
           const Drawer(), //DrawerContent(), // Use the DrawerContent widget here
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        // stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('datePublished', descending: true)
+            .snapshots(),
+
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

@@ -182,16 +182,25 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         color: Colors.black,
                         fontSize: 20,
                       ),
-                      border: InputBorder.none,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
-                    maxLines: 8,
+                    maxLines: 1,
                   ),
                 ),
               ],
             ),
             SizedBox(
-              height: 412,
-              width: 380,
+              height: 140,
+            ),
+            SizedBox(
+              height: 350,
+              width: 390,
               child: _file != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(15.0),

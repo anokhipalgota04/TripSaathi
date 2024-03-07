@@ -11,14 +11,14 @@ import 'package:gonomad/providers/user_provider.dart';
 import 'package:gonomad/resources/global.dart';
 import 'package:provider/provider.dart';
 
-class Personalfeed extends StatefulWidget {
-  const Personalfeed({Key? key}) : super(key: key);
+class PersonalFeed extends StatefulWidget {
+  const PersonalFeed({Key? key}) : super(key: key);
 
   @override
-  State<Personalfeed> createState() => _PersonalfeedState();
+  State<PersonalFeed> createState() => _PersonalFeedState();
 }
 
-class _PersonalfeedState extends State<Personalfeed> {
+class _PersonalFeedState extends State<PersonalFeed> {
   int _page = 0;
   late PageController pageController;
 
@@ -82,24 +82,24 @@ class _PersonalfeedState extends State<Personalfeed> {
                   child: Container(
                     height: 85,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.35),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
+                      color: Colors.white.withOpacity(0.4),
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.white.withOpacity(0.3),
+                      //     spreadRadius: 2,
+                      //     blurRadius: 5,
+                      //     offset: const Offset(0, 8),
+                      //   ),
+                      // ],
                     ),
                     child: CupertinoTabBar(
                       height: 85,
-                      border: Border(
-                        top: BorderSide(
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 0.5,
-                        ),
-                      ),
+                      // border: Border(
+                      //   top: BorderSide(
+                      //     color: Colors.grey.withOpacity(0.2),
+                      //     width: 0.5,
+                      //   ),
+                      // ),
                       iconSize: 32,
                       backgroundColor: Colors.transparent,
                       items: [
