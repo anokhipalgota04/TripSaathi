@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gonomad/models/user.dart';
-import 'package:gonomad/providers/user_provider.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class CommentCard extends StatefulWidget {
   final snap;
@@ -25,7 +22,7 @@ class _CommentCardState extends State<CommentCard> {
 
   @override
   Widget build(BuildContext context) {
-    final User? user = Provider.of<UserProvider>(context).getUser;
+    //final User? user = Provider.of<UserProvider>(context).getUser;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Row(
