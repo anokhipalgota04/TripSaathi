@@ -104,7 +104,7 @@ class _PostCardState extends State<PostCard> {
                                         ),
                                       ),
                                     ),
-                                    //reporting post option
+                                  //reporting post option
                                   if (!isCurrentUserOwner)
                                     InkWell(
                                       onTap: () {
@@ -221,9 +221,11 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
                 IconButton(
-              
-              onPressed: (){},
-              //    onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CommentsScreen())),
+                  //onPressed: (){},
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CommentsScreen(
+                            snap: widget.snap,
+                          ))),
                   icon: const Icon(
                     Icons.comment_outlined,
                     size: 30,

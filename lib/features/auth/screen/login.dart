@@ -3,7 +3,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-
 import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/utils/utils.dart';
@@ -28,8 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthMethods().loginInUsers(
         email: _emailController.text, password: _passwordController.text);
     if (res == "success") {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const PersonalFeed()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const PersonalFeed()));
     } else {
       // Show error message
       showSnackBar(res, context);
@@ -56,28 +55,30 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           // Background image
           Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/Spline1.jpeg'),
-                  fit: BoxFit.cover,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/Spline1.jpeg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.white70.withOpacity(0.0),
+                        Colors.white70.withOpacity(0.0),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              child: ClipRRect(
-                  //borderRadius: BorderRadius.circular(20),
-                  child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Colors.white70.withOpacity(0.0),
-                              Colors.white70.withOpacity(0.0),
-                            ],
-                          ),
-                        ),
-                      )))),
+            ),
+          ),
           // Welcome back text
           Positioned(
             top: screenSize.height * 0.105,
@@ -142,9 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: screenSize.height * 0.027,
                         ),
-
                         //email textfield
-
                         SizedBox(
                           width: screenSize.width * 0.8,
                           child: TextField(
@@ -184,7 +183,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: screenSize.height * 0.022,
                         ),
-
                         //password textfield
                         SizedBox(
                           width: screenSize.width * 0.8,
@@ -237,9 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: screenSize.height * 0.022,
                         ),
-
                         //login button
-
                         GestureDetector(
                           child: InkWell(
                             onTap: loginUser,
@@ -273,9 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: screenSize.height * 0.008,
                         ),
-
                         //forgot password
-
                         //terms and cond text
                         SizedBox(
                           height: screenSize.height * 0.04,
@@ -291,10 +285,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             InkWell(
                               onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Ownership Statement'),
+                                      content: OwnershipStatement(),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Close'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                                 // Add logic for terms and conditions
                               },
                               child: const Text(
-                                'Terms and Conditions',
+                                'Ownership Statement',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black54,
@@ -309,6 +320,56 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class OwnershipStatement extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: () {
+              // Add logic for terms and conditions
+            },
+            child: Text(
+              'Licence',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+          SizedBox(height: 16.0),
+          Text(
+            "Private Ownership Statement\n\n"
+            "This statement serves as a declaration of ownership for the \"Tripsathee/Connect\" application, "
+            "hereinafter referred to as the \"Application.\" The Application is the sole property of Orion "
+            "Technology, owned and operated by Aryan Rameshbhai Rudani.\n\n"
+            "Ownership: The Application, including its source code, design, and all associated intellectual "
+            "property rights, is owned exclusively by Aryan Rameshbhai Rudani and Orion Technology.\n\n"
+            "No Transfer of Ownership: This statement clarifies that ownership of the Application, in whole or "
+            "in part, cannot be transferred, sold, or otherwise conveyed to any other individual or entity "
+            "without the express written consent of Aryan Rameshbhai Rudani and Orion Technology.\n\n"
+            "Modification and Usage: Only authorized persons, as designated by Aryan Rameshbhai Rudani and Orion "
+            "Technology, are permitted to modify or use the Application's source code. Any unauthorized modification, "
+            "distribution, or usage of the Application's source code is strictly prohibited.\n\n"
+            "Confidentiality: All proprietary information, trade secrets, and intellectual property related to the "
+            "Application shall remain confidential and may not be disclosed to any third party without the explicit "
+            "consent of Aryan Rameshbhai Rudani and Orion Technology.\n\n"
+            "Legal Action: Aryan Rameshbhai Rudani and Orion Technology reserve the right to take legal action against "
+            "any individual or entity found to be in violation of this ownership statement, including but not limited "
+            "to seeking damages and injunctive relief.\n\n"
+            "This statement is intended to assert the exclusive ownership of Aryan Rameshbhai Rudani and Orion "
+            "Technology over the \"Gonomad/Connect\" application and to protect their rights and interests therein.\n\n"
+            "Aryan Rameshbhai Rudani\nOwner, Orion Technology",
+            style: TextStyle(color: Colors.black),
           ),
         ],
       ),

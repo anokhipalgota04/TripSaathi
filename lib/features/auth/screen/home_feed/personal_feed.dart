@@ -24,7 +24,7 @@ class FeedScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 18),
             child: Text(
-              'Tripsaathe',
+              'Tripsathi',
               style: GoogleFonts.kaushanScript(
                 color: Colors.black,
                 fontSize: 32.0,
