@@ -21,6 +21,7 @@ class GoogleButton extends ConsumerWidget {
       'CONTINUE WITH GOOGLE',
       customImagePath: 'assets/images/google.png',
       onPressed: () =>signInWithGoogle(ref),
+
     );
   }
 }

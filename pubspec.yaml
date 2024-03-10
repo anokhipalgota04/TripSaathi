@@ -62,9 +62,18 @@ dependencies:
   flutter_cache_manager: ^3.3.1
   transparent_image: ^2.0.1
   flutter_image_compress: ^2.1.0
-  image_cropper: ^5.0.1
-  google_fonts: ^6.1.0
+  image_cropper: ^2.0.1
+  google_fonts: ^4.0.4
   smooth_page_indicator: ^1.1.0
+  emoji_picker_flutter: ^1.5.1
+  # For accessing firebase messaging (Push Notification)
+  firebase_messaging: ^14.2.0
+  # For calling RestAPIs
+  http: ^0.13.6
+  # For creating notification channel
+  flutter_notification_channel: ^2.0.0
+  # For storing images into gallery
+  gallery_saver: ^2.3.1
 
 dev_dependencies:
   flutter_test:
