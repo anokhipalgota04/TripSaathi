@@ -34,6 +34,12 @@ class FeedScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.search_rounded,
+                color: Colors.black,
+              )),
+          IconButton(
             onPressed: () {},
             icon: const Icon(
               Icons.messenger_outline_rounded,

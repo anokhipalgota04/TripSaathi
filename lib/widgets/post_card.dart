@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gonomad/models/user.dart';
 import 'package:gonomad/providers/user_provider.dart';
@@ -20,6 +21,18 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  late Stream<QuerySnapshot> commentsStream;
+
+  @override
+  void initState() {
+    super.initState();
+    commentsStream = FirebaseFirestore.instance
+        .collection('posts')
+        .doc(widget.snap['postId'])
+        .collection('comments')
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
     final User? user = Provider.of<UserProvider>(context).getUser;
@@ -268,19 +281,37 @@ class _PostCardState extends State<PostCard> {
                         ),
                         TextSpan(
                             text: ' ${widget.snap['description']}',
-                            style: TextStyle(fontSize: 15)),
+                            style: const TextStyle(fontSize: 15)),
                       ],
                     ),
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 1.5),
-                      child: Text(
-                        'view all 124 comments',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: commentsStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        final commentCount = snapshot.data?.docs.length ?? 0;
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CommentsScreen(
+                                snap: widget.snap,
+                              ),
+                            ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 1.5),
+                            child: Text(
+                              'view all $commentCount comments',
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   Text(
                     DateFormat.yMMMMd()

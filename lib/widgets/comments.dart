@@ -35,27 +35,24 @@ class _CommentsScreenState extends State<CommentsScreen> {
             .collection('posts')
             .doc(widget.snap['postId'])
             .collection('comments')
+            .orderBy('datePublished', descending: true)
             .snapshots(),
-
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return ListView.builder(
-                itemCount: (snapshot.data as dynamic).docs.length,
-                itemBuilder: (context, index) {
-                  return CommentCard(
-                    snap: (snapshot.data! as dynamic).docs[index].data(),
-                  );
-                },
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: (snapshot.data as dynamic).docs.length,
+            itemBuilder: (context, index) {
+              return CommentCard(
+                snap: (snapshot.data! as dynamic).docs[index].data(),
               );
             },
+          );
+        },
       ),
-
-
-
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
@@ -108,7 +105,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
                   setState(() {
                     _commentcontroller.clear();
-                  
                   });
                 },
                 icon: const Icon(
