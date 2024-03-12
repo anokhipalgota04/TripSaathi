@@ -37,6 +37,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       if (res == "success") {
         setState(() {
           _isLoading = false;
+          _descriptionController.clear();
         });
         clearImage();
         showSnackBar(
@@ -195,7 +196,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 140,
             ),
             SizedBox(

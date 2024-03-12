@@ -2,6 +2,8 @@ import 'dart:ui'; // Import for using BackdropFilter
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import for SystemChrome
+import 'package:gonomad/features/auth/screen/chat_feed/home_screen.dart';
+import 'package:gonomad/features/auth/screen/home_feed/search_screen.dart';
 import 'package:gonomad/widgets/post_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +24,7 @@ class FeedScreen extends StatelessWidget {
         elevation: 1, // Remove the elevation
         title: Center(
           child: Padding(
-            padding: const EdgeInsets.only(right: 18),
+            padding: const EdgeInsets.only(left: 25),
             child: Text(
               'Tripsathi',
               style: GoogleFonts.kaushanScript(
@@ -34,13 +36,24 @@ class FeedScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SearchScreen()));
+              },
               icon: const Icon(
                 Icons.search_rounded,
-                color: Colors.black,
+                color: Color.fromARGB(255, 0, 0, 0),
+                size: 30,
               )),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            },
             icon: const Icon(
               Icons.messenger_outline_rounded,
             ),
