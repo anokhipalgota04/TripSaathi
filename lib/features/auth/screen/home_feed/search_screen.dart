@@ -103,11 +103,13 @@ class _SearchScreenState extends State<SearchScreen> {
                   }
 
                   return StaggeredGridView.countBuilder(
+                    shrinkWrap: true,
                     crossAxisCount: 3,
                     itemCount: (snapshot.data! as dynamic).docs.length,
                     itemBuilder: (context, index) => CachedNetworkImage(
                       imageUrl: (snapshot.data! as dynamic).docs[index]
                           ['postUrl'],
+                      fit: BoxFit.cover,
                       placeholder: (context, url) => const Center(
                         child: CircularProgressIndicator(),
                       ),
