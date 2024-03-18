@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -85,11 +86,11 @@ class _LoginScreenState extends State<LoginScreen> {
             left: screenSize.width * 0.06,
             child: Text(
               'Welcome',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: screenSize.width * 0.1,
-                fontWeight: FontWeight.bold,
-              ),
+              style: 
+                GoogleFonts.dmSerifDisplay(color: Colors.black,
+          fontSize: screenSize.width * 0.1,
+          fontWeight: FontWeight.bold,)
+              
             ),
           ),
           Positioned(
@@ -349,7 +350,7 @@ class OwnershipStatement extends StatelessWidget {
           SizedBox(height: 16.0),
           Text(
             "Private Ownership Statement\n\n"
-            "This statement serves as a declaration of ownership for the \"Tripsathee/Connect\" application, "
+            "This statement serves as a declaration of ownership for the \"Tripsathi/Connect\" application, "
             "hereinafter referred to as the \"Application.\" The Application is the sole property of Orion "
             "Technology, owned and operated by Aryan Rameshbhai Rudani.\n\n"
             "Ownership: The Application, including its source code, design, and all associated intellectual "
@@ -367,7 +368,7 @@ class OwnershipStatement extends StatelessWidget {
             "any individual or entity found to be in violation of this ownership statement, including but not limited "
             "to seeking damages and injunctive relief.\n\n"
             "This statement is intended to assert the exclusive ownership of Aryan Rameshbhai Rudani and Orion "
-            "Technology over the \"Gonomad/Connect\" application and to protect their rights and interests therein.\n\n"
+            "Technology over the \"Tripsathi/Connect\" application and to protect their rights and interests therein.\n\n"
             "Aryan Rameshbhai Rudani\nOwner, Orion Technology",
             style: TextStyle(color: Colors.black),
           ),

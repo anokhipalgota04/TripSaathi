@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gonomad/features/auth/screen/profile_screen.dart';
 import 'package:gonomad/models/user.dart';
 import 'package:gonomad/providers/user_provider.dart';
 import 'package:gonomad/resources/firestore_methods.dart';
@@ -65,11 +66,20 @@ class _PostCardState extends State<PostCard> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        widget.snap['username'],
-                        style: const TextStyle(
-                            fontSize: 16.5, fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfileScreen(
+                              uid: widget.snap['uid'],
+                            ),
+                          ));
+                        },
+                        child: Text(
+                          widget.snap['username'],
+                          style: const TextStyle(
+                              fontSize: 16.5, fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ),
@@ -244,13 +254,7 @@ class _PostCardState extends State<PostCard> {
                     size: 30,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.send_rounded,
-                    size: 30,
-                  ),
-                ),
+               //'
                 const Spacer(),
                 IconButton(
                   onPressed: () {},

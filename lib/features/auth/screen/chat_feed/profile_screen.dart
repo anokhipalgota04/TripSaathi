@@ -15,12 +15,14 @@ import 'package:gonomad/apis/apis.dart';
 import 'package:gonomad/helper/dialogs.dart';
 import 'package:gonomad/models/chat_user.dart';
 
-
 //profile screen -- to show signed in user info
 class ProfileScreen extends StatefulWidget {
   final ChatUser user;
 
-  const ProfileScreen({super.key, required this.user});
+  const ProfileScreen({
+    super.key,
+    required this.user,
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -90,28 +92,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       //profile picture
                       _image != null
                           ? ClipRRect(
-                        borderRadius:
-                        BorderRadius.circular(screenHeight * .1),
-                        child: Image.file(
-                          File(_image!),
-                          width: screenHeight * .2,
-                          height: screenHeight * .2,
-                          fit: BoxFit.cover,
-                        ),
-                      )
+                              borderRadius:
+                                  BorderRadius.circular(screenHeight * .1),
+                              child: Image.file(
+                                File(_image!),
+                                width: screenHeight * .2,
+                                height: screenHeight * .2,
+                                fit: BoxFit.cover,
+                              ),
+                            )
                           : ClipRRect(
-                        borderRadius:
-                        BorderRadius.circular(screenHeight * .1),
-                        child: CachedNetworkImage(
-                          width: screenHeight * .2,
-                          height: screenHeight * .2,
-                          fit: BoxFit.cover,
-                          imageUrl: widget.user.image,
-                          errorWidget: (context, url, error) =>
-                          const CircleAvatar(
-                              child: Icon(CupertinoIcons.person)),
-                        ),
-                      ),
+                              borderRadius:
+                                  BorderRadius.circular(screenHeight * .1),
+                              child: CachedNetworkImage(
+                                width: screenHeight * .2,
+                                height: screenHeight * .2,
+                                fit: BoxFit.cover,
+                                imageUrl: widget.user.image,
+                                errorWidget: (context, url, error) =>
+                                    const CircleAvatar(
+                                        child: Icon(CupertinoIcons.person)),
+                              ),
+                            ),
 
                       //edit image button
                       Positioned(
@@ -144,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     initialValue: widget.user.name,
                     onSaved: (val) => APIs.me.name = val ?? '',
                     validator: (val) =>
-                    val != null && val.isNotEmpty ? null : 'Required Field',
+                        val != null && val.isNotEmpty ? null : 'Required Field',
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.person, color: Colors.blue),
                       border: OutlineInputBorder(
@@ -160,10 +162,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     initialValue: widget.user.about,
                     onSaved: (val) => APIs.me.about = val ?? '',
                     validator: (val) =>
-                    val != null && val.isNotEmpty ? null : 'Required Field',
+                        val != null && val.isNotEmpty ? null : 'Required Field',
                     decoration: InputDecoration(
                       prefixIcon:
-                      const Icon(Icons.info_outline, color: Colors.blue),
+                          const Icon(Icons.info_outline, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

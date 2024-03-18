@@ -46,7 +46,8 @@ class _MessageCardState extends State<MessageCard> {
                 ? mq.size.width * .03
                 : mq.size.width * .04),
             margin: EdgeInsets.symmetric(
-                horizontal: mq.size.width * .04, vertical: mq.size.height * .01),
+                horizontal: mq.size.width * .04,
+                vertical: mq.size.height * .01),
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 221, 245, 255),
               border: Border.all(color: Colors.lightBlue),
@@ -58,21 +59,21 @@ class _MessageCardState extends State<MessageCard> {
             ),
             child: widget.message.type == Type.text
                 ? Text(
-              widget.message.msg,
-              style: const TextStyle(fontSize: 15, color: Colors.black87),
-            )
+                    widget.message.msg,
+                    style: const TextStyle(fontSize: 15, color: Colors.black87),
+                  )
                 : ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: CachedNetworkImage(
-                imageUrl: widget.message.msg,
-                placeholder: (context, url) => const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-                errorWidget: (context, url, error) =>
-                const Icon(Icons.image, size: 70),
-              ),
-            ),
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.message.msg,
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.image, size: 70),
+                    ),
+                  ),
           ),
         ),
         Padding(
@@ -119,8 +120,8 @@ class _MessageCardState extends State<MessageCard> {
               vertical: mq.size.height * .01,
             ),
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 218, 255, 176),
-              border: Border.all(color: Colors.lightGreen),
+              color: Color.fromARGB(255, 241, 208, 240),
+              border: Border.all(color: Color.fromARGB(255, 222, 87, 184)),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
@@ -129,21 +130,21 @@ class _MessageCardState extends State<MessageCard> {
             ),
             child: widget.message.type == Type.text
                 ? Text(
-              widget.message.msg,
-              style: const TextStyle(fontSize: 15, color: Colors.black87),
-            )
+                    widget.message.msg,
+                    style: const TextStyle(fontSize: 15, color: Colors.black87),
+                  )
                 : ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: CachedNetworkImage(
-                imageUrl: widget.message.msg,
-                placeholder: (context, url) => const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-                errorWidget: (context, url, error) =>
-                const Icon(Icons.image, size: 70),
-              ),
-            ),
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.message.msg,
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.image, size: 70),
+                    ),
+                  ),
           ),
         ),
       ],
@@ -177,40 +178,40 @@ class _MessageCardState extends State<MessageCard> {
             ),
             widget.message.type == Type.text
                 ? _OptionItem(
-              icon: const Icon(Icons.copy_all_rounded,
-                  color: Colors.blue, size: 26),
-              name: 'Copy Text',
-              onTap: () async {
-                await Clipboard.setData(
-                  ClipboardData(text: widget.message.msg),
-                ).then((value) {
-                  Navigator.pop(context);
-                  Dialogs.showSnackbar(context, 'Text Copied!');
-                });
-              },
-            )
+                    icon: const Icon(Icons.copy_all_rounded,
+                        color: Colors.blue, size: 26),
+                    name: 'Copy Text',
+                    onTap: () async {
+                      await Clipboard.setData(
+                        ClipboardData(text: widget.message.msg),
+                      ).then((value) {
+                        Navigator.pop(context);
+                        Dialogs.showSnackbar(context, 'Text Copied!');
+                      });
+                    },
+                  )
                 : _OptionItem(
-              icon: const Icon(Icons.download_rounded,
-                  color: Colors.blue, size: 26),
-              name: 'Save Image',
-              onTap: () async {
-                try {
-                  log('Image Url: ${widget.message.msg}');
-                  await GallerySaver.saveImage(
-                    widget.message.msg,
-                    albumName: 'We Chat',
-                  ).then((success) {
-                    Navigator.pop(context);
-                    if (success != null && success) {
-                      Dialogs.showSnackbar(
-                          context, 'Image Successfully Saved!');
-                    }
-                  });
-                } catch (e) {
-                  log('ErrorWhileSavingImg: $e');
-                }
-              },
-            ),
+                    icon: const Icon(Icons.download_rounded,
+                        color: Colors.blue, size: 26),
+                    name: 'Save Image',
+                    onTap: () async {
+                      try {
+                        log('Image Url: ${widget.message.msg}');
+                        await GallerySaver.saveImage(
+                          widget.message.msg,
+                          albumName: 'We Chat',
+                        ).then((success) {
+                          Navigator.pop(context);
+                          if (success != null && success) {
+                            Dialogs.showSnackbar(
+                                context, 'Image Successfully Saved!');
+                          }
+                        });
+                      } catch (e) {
+                        log('ErrorWhileSavingImg: $e');
+                      }
+                    },
+                  ),
             if (isMe) const Divider(color: Colors.black54),
             if (widget.message.type == Type.text && isMe)
               _OptionItem(
@@ -235,7 +236,8 @@ class _MessageCardState extends State<MessageCard> {
             const Divider(color: Colors.black54),
             _OptionItem(
               icon: const Icon(Icons.remove_red_eye, color: Colors.blue),
-              name: 'Sent At: ${MyDateUtil.getMessageTime(context: context, time: widget.message.sent)}',
+              name:
+                  'Sent At: ${MyDateUtil.getMessageTime(context: context, time: widget.message.sent)}',
               onTap: () {},
             ),
             _OptionItem(
@@ -259,8 +261,8 @@ class _MessageCardState extends State<MessageCard> {
       builder: (_) => StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            contentPadding: const EdgeInsets.only(
-                left: 24, right: 24, top: 20, bottom: 10),
+            contentPadding:
+                const EdgeInsets.only(left: 24, right: 24, top: 20, bottom: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
@@ -271,13 +273,12 @@ class _MessageCardState extends State<MessageCard> {
                   color: Colors.blue,
                   size: 28,
                 ),
-                Text(' Update Message',
+                Text(
+                  ' Update Message',
                   style: TextStyle(
                     fontSize: 20, // Updated font size to 20
                   ),
                 ),
-
-
               ],
             ),
             content: TextFormField(

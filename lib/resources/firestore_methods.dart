@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -83,11 +85,43 @@ class FirestoreMethods {
   }
 
 //deleting posts
-  Future<void> deletePost(String postId) async {
+  Future<String> deletePost(String postId) async {
+    String res = "Some error occurred";
     try {
       await _firestore.collection('posts').doc(postId).delete();
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<void> followUser(String uid, String followId) async {
+    try {
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(uid).get();
+      List following = (snap.data()! as dynamic)['following'];
+      // List followers =
+      //     (snap.data()! as dynamic)['followers']; // Retrieve followers list
+
+      if (following.contains(followId)) {
+        // If already following, unfollow
+        await _firestore.collection('users').doc(followId).update({
+          'followers': FieldValue.arrayRemove([uid])
+        });
+        await _firestore.collection('users').doc(uid).update({
+          'following': FieldValue.arrayRemove([followId])
+        });
+      } else {
+        // If not following, follow
+        await _firestore.collection('users').doc(followId).update({
+          'followers': FieldValue.arrayUnion([uid])
+        });
+        await _firestore.collection('users').doc(uid).update({
+          'following': FieldValue.arrayUnion([followId])
+        });
+      }
     } catch (e) {
-      print(e.toString());
+      print('Error in follow user: $e');
     }
   }
 }
