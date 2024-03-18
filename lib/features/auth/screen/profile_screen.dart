@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             body: ListView(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
                       Row(
@@ -121,17 +121,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             widget.uid
                                         ? FollowButton(
                                             text: 'Edit Profile',
-                                            backgroungcolor: Colors.white,
-                                            bordercolor: Colors.grey,
-                                            textcolor: Colors.black,
+                                            backgroundColor: Colors.white,
+                                            borderColor: Colors.grey,
+                                            textColor: Colors.black,
                                             function: () {},
                                           )
                                         : isFollowing
                                             ? FollowButton(
                                                 text: 'Disconnect',
-                                                backgroungcolor: Colors.grey,
-                                                bordercolor: Colors.black,
-                                                textcolor: Colors.black,
+                                                backgroundColor: Colors.grey,
+                                                borderColor: Colors.black,
+                                                textColor: Colors.black,
                                                 function: () async {
                                                   await FirestoreMethods()
                                                       .followUser(
@@ -147,9 +147,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               )
                                             : FollowButton(
                                                 text: 'Connect',
-                                                backgroungcolor: Colors.blue,
-                                                bordercolor: Colors.grey,
-                                                textcolor: Colors.white,
+                                                backgroundColor: Colors.blue,
+                                                borderColor: Colors.grey,
+                                                textColor: Colors.white,
                                                 function: () async {
                                                   await FirestoreMethods()
                                                       .followUser(
@@ -157,13 +157,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .currentUser!.uid,
                                                     userData['uid'],
                                                   );
-                                               
+                                                  print(
+                                                      'herjh hkab vhaberhbehkvbkhdfabvjkhafbvjk bvjkafsbvka vkhs ajvka skjv asjkv jkas vjkasf vkjasbvjasbvjlasbvjlav223326236726fvt2edv23yuvyt26hhjsjhs ');
+                                                  print(
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid,
+                                                  );
+                                                  print(
+                                                    userData['uid'],
+                                                  );
+
                                                   setState(() {
                                                     isFollowing = true;
                                                     followers++;
                                                   });
                                                 },
-                                              )
+                                              ),
                                   ],
                                 )
                               ],
@@ -173,10 +182,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(top: 15.0),
+                        padding: const EdgeInsets.only(top: 15.0),
                         child: Text(
                           userData['username'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           ),
@@ -184,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(top: 1.0),
+                        padding: const EdgeInsets.only(top: 1.0),
                         child: Text(
                           userData['bio'],
                         ),
@@ -200,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       .get(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
@@ -250,14 +259,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(num.toString(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             )),
         Container(
-          margin: EdgeInsets.only(top: 3),
+          margin: const EdgeInsets.only(top: 3),
           child: Text(label,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
                 color: Colors.grey,
@@ -286,9 +295,9 @@ class FullScreenImage extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: url,
           placeholder: (context, url) =>
-              CircularProgressIndicator(), // Placeholder while loading
+              const CircularProgressIndicator(), // Placeholder while loading
           errorWidget: (context, url, error) =>
-              Icon(Icons.error), // Error widget if image fails to load
+              const Icon(Icons.error), // Error widget if image fails to load
           fit: BoxFit.contain, // Fit image to the screen
         ),
       ),

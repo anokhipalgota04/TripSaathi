@@ -1,45 +1,44 @@
-
-
 import 'package:flutter/material.dart';
 
 class FollowButton extends StatelessWidget {
   final Function()? function;
-  final Color backgroungcolor;
-  final Color bordercolor;
-  final Color textcolor;
+  final Color backgroundColor;
+  final Color borderColor;
   final String text;
+  final Color textColor;
   const FollowButton(
       {Key? key,
-      required this.backgroungcolor,
-      required this.bordercolor,
+      required this.backgroundColor,
+      required this.borderColor,
       required this.text,
-      required this.textcolor,
+      required this.textColor,
       this.function})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        top: 2,
-      ),
+      padding: const EdgeInsets.only(top: 2),
       child: TextButton(
-        onPressed: () {},
+        onPressed: function,
         child: Container(
           decoration: BoxDecoration(
-              color: backgroungcolor,
-              border: Border.all(color: bordercolor),
-              borderRadius: BorderRadius.circular(5)),
+            color: backgroundColor,
+            border: Border.all(
+              color: borderColor,
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
           alignment: Alignment.center,
+          width: 250,
+          height: 42,
           child: Text(
             text,
             style: TextStyle(
-              color: textcolor,
+              color: textColor,
               fontWeight: FontWeight.bold,
             ),
           ),
-          width: 250,
-          height: 32,
         ),
       ),
     );
