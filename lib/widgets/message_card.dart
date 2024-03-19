@@ -120,8 +120,8 @@ class _MessageCardState extends State<MessageCard> {
               vertical: mq.size.height * .01,
             ),
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 241, 208, 240),
-              border: Border.all(color: Color.fromARGB(255, 222, 87, 184)),
+              color: const Color.fromARGB(255, 241, 208, 240),
+              border: Border.all(color: const Color.fromARGB(255, 222, 87, 184)),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),

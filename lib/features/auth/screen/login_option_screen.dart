@@ -132,13 +132,13 @@ class _BackgroundVideoState extends State<BackgroundVideo> {
                     );
                   },
                 ),
-                const SizedBox(height: 16),
-                GoogleButton(
-                  onPressed: () {
+                // const SizedBox(height: 16),
+                // GoogleButton(
+                //   onPressed: () {
                      
-                    // Perf
-                  },
-                ),
+                //     // Perf
+                //   },
+                // ),
               ],
             ),
           ),

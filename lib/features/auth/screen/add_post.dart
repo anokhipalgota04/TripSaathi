@@ -161,7 +161,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 CachedNetworkImage(
                   imageUrl: user!.photoUrl,
                   imageBuilder: (context, imageProvider) => CircleAvatar(
-                    radius: 30.0,
+                    radius: 32.0,
                     backgroundImage: imageProvider,
                   ),
 //  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
@@ -169,7 +169,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       Icons.error), // Widget to show when loading fails
                 ),
 
-                // CircleAvatar(
+                // CircleAvatar
                 //   backgroundImage: NetworkImage(user.photoUrl),
                 //   radius: 30,
                 // ),
@@ -178,7 +178,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   child: TextField(
                     controller: _descriptionController,
                     decoration: InputDecoration(
-                      hintText: 'Write your caption...',
+                        hintText: "What's on your mind...",
                       hintStyle: GoogleFonts.kaushanScript(
                         color: Colors.black,
                         fontSize: 20,

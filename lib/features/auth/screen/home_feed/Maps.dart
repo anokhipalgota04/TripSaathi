@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison, file_names, unnecessary_new, prefer_final_fields
+
 import 'dart:async';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';

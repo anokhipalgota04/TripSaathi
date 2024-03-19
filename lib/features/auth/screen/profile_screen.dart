@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gonomad/features/auth/screen/login_option_screen.dart';
+import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/resources/firestore_methods.dart';
 import 'package:gonomad/utils/utils.dart';
 import 'package:gonomad/widgets/follow_button.dart';
@@ -120,11 +122,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     FirebaseAuth.instance.currentUser!.uid ==
                                             widget.uid
                                         ? FollowButton(
-                                            text: 'Edit Profile',
+                                            text: 'Sign Out',
                                             backgroundColor: Colors.white,
                                             borderColor: Colors.grey,
                                             textColor: Colors.black,
-                                            function: () {},
+                                            function: () async {
+                                              await AuthMethods().signOut();
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BackgroundVideo()));
+                                            },
                                           )
                                         : isFollowing
                                             ? FollowButton(
@@ -155,15 +164,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .followUser(
                                                     FirebaseAuth.instance
                                                         .currentUser!.uid,
-                                                    userData['uid'],
-                                                  );
-                                                  print(
-                                                      'herjh hkab vhaberhbehkvbkhdfabvjkhafbvjk bvjkafsbvka vkhs ajvka skjv asjkv jkas vjkasf vkjasbvjasbvjlasbvjlav223326236726fvt2edv23yuvyt26hhjsjhs ');
-                                                  print(
-                                                    FirebaseAuth.instance
-                                                        .currentUser!.uid,
-                                                  );
-                                                  print(
                                                     userData['uid'],
                                                   );
 

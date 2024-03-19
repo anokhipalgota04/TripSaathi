@@ -84,21 +84,19 @@ class _LoginScreenState extends State<LoginScreen> {
           Positioned(
             top: screenSize.height * 0.105,
             left: screenSize.width * 0.06,
-            child: Text(
-              'Welcome',
-              style: 
-                GoogleFonts.dmSerifDisplay(color: Colors.black,
-          fontSize: screenSize.width * 0.1,
-          fontWeight: FontWeight.bold,)
-              
-            ),
+            child: Text('Welcome',
+                style: GoogleFonts.dmSerifDisplay(
+                  color: Colors.black,
+                  fontSize: screenSize.width * 0.1,
+                  fontWeight: FontWeight.bold,
+                )),
           ),
           Positioned(
             top: screenSize.height * 0.155,
             left: screenSize.width * 0.06,
             child: Text(
               'Back!',
-              style: TextStyle(
+              style: GoogleFonts.dmSerifDisplay(
                 color: Colors.black,
                 fontSize: screenSize.width * 0.1,
                 fontWeight: FontWeight.bold,

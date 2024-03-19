@@ -254,15 +254,15 @@ class _PostCardState extends State<PostCard> {
                     size: 30,
                   ),
                 ),
-               //'
-                const Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.bookmark_border_rounded,
-                    size: 30,
-                  ),
-                ),
+
+                //   const Spacer(),
+                //   IconButton(
+                //     onPressed: () {},
+                //     icon: const Icon(
+                //       Icons.bookmark_border_rounded,
+                //       size: 30,
+                //     ),
+                //   ),
               ],
             ),
             Padding(

@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gonomad/models/post.dart';
 import 'package:gonomad/resources/storage_methods.dart';
+import 'package:gonomad/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 class FirestoreMethods {
@@ -41,6 +42,37 @@ class FirestoreMethods {
     }
     return res;
   }
+
+  // Future<String> reportPost(
+  //     {required postId, required username, required profilePic, required photoUrl}) async {
+  //   String res = "some error occured";
+  //   try {
+  //     await _firestore.collection('reportedPosts').doc(postId).set({
+  //       'postId': postId,
+  //       'username': username,
+  //       'profilePic': profilePic,
+  //       'date': DateTime.now(),
+  //     });
+  //     res = "success";
+  //   } catch (e) {
+  //     res = e.toString();
+  //   }
+  //   return res;
+  // }
+
+//   Future<void> deleteComment(
+//       String postId, String commentId, String uid, String username) async {
+//     try {
+//       await _firestore
+//           .collection('posts')
+//           .doc(postId)
+//           .collection('comments')
+//           .doc(commentId)
+//           .delete();
+//     } catch (e) {
+//       print(e.toString());
+//     }
+// }
 
   Future<void> likePost(String postId, String uid, List likes) async {
     try {
