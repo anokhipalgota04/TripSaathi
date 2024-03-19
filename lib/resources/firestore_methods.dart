@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gonomad/models/post.dart';
 import 'package:gonomad/resources/storage_methods.dart';
-import 'package:gonomad/utils/utils.dart';
+ 
 import 'package:uuid/uuid.dart';
 
 class FirestoreMethods {

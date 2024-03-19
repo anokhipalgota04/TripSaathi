@@ -109,7 +109,7 @@ class _PersonalFeedState extends State<PersonalFeed> {
                                   _page == 0 ? Colors.black : Colors.black54),
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.group,
+                          icon: Icon(Icons.trending_up_rounded,
                               color:
                                   _page == 1 ? Colors.black : Colors.black54),
                         ),
