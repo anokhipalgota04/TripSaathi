@@ -288,14 +288,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text('Ownership Statement'),
+                                      title: const Text('Ownership Statement'),
                                       content: OwnershipStatement(),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: Text('Close'),
+                                          child: const Text('Close'),
                                         ),
                                       ],
                                     );
@@ -337,7 +337,7 @@ class OwnershipStatement extends StatelessWidget {
             onTap: () {
               // Add logic for terms and conditions
             },
-            child: Text(
+            child: const Text(
               'Licence',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -345,8 +345,8 @@ class OwnershipStatement extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 16.0),
-          Text(
+          const SizedBox(height: 16.0),
+          const Text(
             "Private Ownership Statement\n\n"
             "This statement serves as a declaration of ownership for the \"Tripsathi/Connect\" application, "
             "hereinafter referred to as the \"Application.\" The Application is the sole property of Orion "

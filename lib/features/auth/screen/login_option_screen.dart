@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gonomad/features/auth/screen/google_button.dart';
+
 import 'package:gonomad/features/auth/screen/signup.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
