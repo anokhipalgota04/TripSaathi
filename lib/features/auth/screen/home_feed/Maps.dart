@@ -38,6 +38,7 @@ class _MapingState extends State<Maping> {
           target: _kGooglePlex,
           zoom: 13,
         ),
+        myLocationButtonEnabled: true,
         markers: {},
       ),
       floatingActionButton: FloatingActionButton(
@@ -76,14 +77,14 @@ class _MapingState extends State<Maping> {
       }
     }
 
-    _locationController.onLocationChanged.listen((LocationData currentlocation) {
+    /*_locationController.onLocationChanged.listen((LocationData currentlocation) {
       if (currentlocation.latitude != null && currentlocation.longitude != null) {
         setState(() {
           _currentP = LatLng(currentlocation.latitude!, currentlocation.longitude!);
           _cameraToPosition(_currentP!);
         });
       }
-    });
+    });*/
   }
 
   Future<void> _openLocationSettings() async {
