@@ -82,17 +82,13 @@ class _TrendingCardState extends State<TrendingCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Add padding to the description text
-                    Padding(
+                    SingleChildScrollView(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: Flexible(
-                        child: SingleChildScrollView(
-                          child: Text(
-                            widget.snap['description'],
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black87,
-                            ),
-                          ),
+                      child: Text(
+                        widget.snap['description'],
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black87,
                         ),
                       ),
                     ),
