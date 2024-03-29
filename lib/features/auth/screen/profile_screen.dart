@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gonomad/features/auth/screen/login_option_screen.dart';
+import 'package:gonomad/features/followers_list.dart';
+import 'package:gonomad/features/following_list.dart';
 import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/resources/firestore_methods.dart';
 import 'package:gonomad/utils/utils.dart';
@@ -111,8 +113,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     buildStatColumn(postLen, "posts"),
-                                    buildStatColumn(followers, "followers"),
-                                    buildStatColumn(following, "following")
+                                    GestureDetector(
+                                      child: buildStatColumn(
+                                          followers, "followers"),
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FollowerCount(
+                                                      uid: widget.uid))),
+                                    ),
+                                    GestureDetector(
+                                      child: buildStatColumn(
+                                          following, "following"),
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FollowingCount(
+                                                    uid: widget.uid,
+                                                  ))),
+                                    )
                                   ],
                                 ),
                                 Row(
