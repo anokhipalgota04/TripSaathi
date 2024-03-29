@@ -2,11 +2,15 @@
 
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:gonomad/apis/apis.dart';
+import 'package:gonomad/features/auth/screen/chat_feed/person_list.dart';
 import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 import 'package:gonomad/helper/dialogs.dart';
 import 'package:gonomad/models/chat_user.dart';
@@ -17,6 +21,8 @@ import 'profile_screen.dart';
 // home screen -- where all available contacts are shown
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  //String? get uid => FirebaseAuth.instance.currentUser!.uid;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -95,26 +101,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
             title: _isSearching
                 ? TextField(
-              decoration: const InputDecoration(
-                  border: InputBorder.none, hintText: 'Name, Email, ...'),
-              autofocus: true,
-              style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
-              // when search text changes then updated search list
-              onChanged: (val) {
-                // search logic
-                _searchList.clear();
+                    decoration: const InputDecoration(
+                        border: InputBorder.none, hintText: 'Name, Email, ...'),
+                    autofocus: true,
+                    style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
+                    // when search text changes then updated search list
+                    onChanged: (val) {
+                      // search logic
+                      _searchList.clear();
 
-                for (var i in _list) {
-                  if (i.name.toLowerCase().contains(val.toLowerCase()) ||
-                      i.email.toLowerCase().contains(val.toLowerCase())) {
-                    _searchList.add(i);
-                    setState(() {
-                      _searchList;
-                    });
-                  }
-                }
-              },
-            )
+                      for (var i in _list) {
+                        if (i.name.toLowerCase().contains(val.toLowerCase()) ||
+                            i.email.toLowerCase().contains(val.toLowerCase())) {
+                          _searchList.add(i);
+                          setState(() {
+                            _searchList;
+                          });
+                        }
+                      }
+                    },
+                  )
                 : const Text('We Chat'),
             bottom: TabBar(
               controller: _tabController,
@@ -124,7 +130,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.chat), // Icon for Chats tab
-                      SizedBox(width: 5), // Adjust the spacing between icon and text
+                      SizedBox(
+                          width: 5), // Adjust the spacing between icon and text
                       Text('Chats'),
                     ],
                   ),
@@ -134,7 +141,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.group), // Icon for Groups tab
-                      SizedBox(width: 5), // Adjust the spacing between icon and text
+                      SizedBox(
+                          width: 5), // Adjust the spacing between icon and text
                       Text('Groups'),
                     ],
                   ),
@@ -167,11 +175,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
 
           // floating button to add new user
+          // floatingActionButton: Padding(
+          //   padding: const EdgeInsets.only(bottom: 10),
+          //   child: FloatingActionButton(
+          //       onPressed: () {
+          //         _addChatUserDialog();
+          //       },
+          //       child: const Icon(Icons.add_comment_rounded)),
+          // ),
+
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: FloatingActionButton(
+              
                 onPressed: () {
-                  _addChatUserDialog();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const PersonList()));
                 },
                 child: const Icon(Icons.add_comment_rounded)),
           ),
@@ -187,22 +206,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 // get id of only known users
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
-                  // if data is loading
+                    // if data is loading
                     case ConnectionState.waiting:
                     case ConnectionState.none:
                       return const Center(child: CircularProgressIndicator());
 
-                  // if some or all data is loaded then show it
+                    // if some or all data is loaded then show it
                     case ConnectionState.active:
                     case ConnectionState.done:
                       return StreamBuilder(
                         stream: APIs.getAllUsers(
-                            snapshot.data?.docs.map((e) => e.id).toList() ?? []),
+                            snapshot.data?.docs.map((e) => e.id).toList() ??
+                                []),
 
                         // get only those user, who's ids are provided
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
-                          // if data is loading
+                            // if data is loading
                             case ConnectionState.waiting:
                             case ConnectionState.none:
                             // return const Center(
@@ -213,8 +233,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             case ConnectionState.done:
                               final data = snapshot.data?.docs;
                               _list = data
-                                  ?.map((e) => ChatUser.fromJson(e.data()))
-                                  .toList() ??
+                                      ?.map((e) => ChatUser.fromJson(e.data()))
+                                      .toList() ??
                                   [];
 
                               if (_list.isNotEmpty) {
@@ -222,7 +242,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     itemCount: _isSearching
                                         ? _searchList.length
                                         : _list.length,
-                                    padding: EdgeInsets.only(top: mq.size.height * .01), // Changed mq.height to mq.size.height
+                                    padding: EdgeInsets.only(
+                                        top: mq.size.height *
+                                            .01), // Changed mq.height to mq.size.height
                                     physics: const BouncingScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       return ChatUserCard(
@@ -246,7 +268,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ListView(
                 children: [
                   ListTile(
-                    leading: const Icon(Icons.add), // Icon for Create Group option
+                    leading:
+                        const Icon(Icons.add), // Icon for Create Group option
                     title: const Text('Create Group'),
                     onTap: () {
                       _createGroup(context);
@@ -269,65 +292,65 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          contentPadding: const EdgeInsets.only(
-              left: 24, right: 24, top: 20, bottom: 10),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20)),
+              contentPadding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 20, bottom: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
 
-          // title
-          title: const Row(
-            children: [
-              Icon(
-                Icons.person_add,
-                color: Colors.blue,
-                size: 28,
+              // title
+              title: const Row(
+                children: [
+                  Icon(
+                    Icons.person_add,
+                    color: Colors.blue,
+                    size: 28,
+                  ),
+                  Text('  Add User')
+                ],
               ),
-              Text('  Add User')
-            ],
-          ),
 
-          // content
-          content: TextFormField(
-            maxLines: null,
-            onChanged: (value) => email = value,
-            decoration: InputDecoration(
-                hintText: 'Email Id',
-                prefixIcon: const Icon(Icons.email, color: Colors.blue),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15))),
-          ),
+              // content
+              content: TextFormField(
+                maxLines: null,
+                onChanged: (value) => email = value,
+                decoration: InputDecoration(
+                    hintText: 'Email Id',
+                    prefixIcon: const Icon(Icons.email, color: Colors.blue),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15))),
+              ),
 
-          // actions
-          actions: [
-            // cancel button
-            MaterialButton(
-                onPressed: () {
-                  // hide alert dialog
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel',
-                    style: TextStyle(color: Colors.blue, fontSize: 16))),
+              // actions
+              actions: [
+                // cancel button
+                MaterialButton(
+                    onPressed: () {
+                      // hide alert dialog
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.blue, fontSize: 16))),
 
-            // add button
-            MaterialButton(
-                onPressed: () async {
-                  // hide alert dialog
-                  Navigator.pop(context);
-                  if (email.isNotEmpty) {
-                    await APIs.addChatUser(email).then((value) {
-                      if (!value) {
-                        Dialogs.showSnackbar(
-                            context, 'User does not Exists!');
+                // add button
+                MaterialButton(
+                    onPressed: () async {
+                      // hide alert dialog
+                      Navigator.pop(context);
+                      if (email.isNotEmpty) {
+                        await APIs.addChatUser(email).then((value) {
+                          if (!value) {
+                            Dialogs.showSnackbar(
+                                context, 'User does not Exists!');
+                          }
+                        });
                       }
-                    });
-                  }
-                },
-                child: const Text(
-                  'Add',
-                  style: TextStyle(color: Colors.blue, fontSize: 16),
-                ))
-          ],
-        ));
+                    },
+                    child: const Text(
+                      'Add',
+                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                    ))
+              ],
+            ));
   }
 
   void _createGroup(BuildContext context) {
