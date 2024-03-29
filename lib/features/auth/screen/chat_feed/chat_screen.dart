@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:gonomad/apis/apis.dart';
 import 'package:gonomad/helper/my_date_util.dart';
-import 'package:gonomad/main.dart';
+
 import 'package:gonomad/models/chat_user.dart';
 import 'package:gonomad/models/message.dart';
 import 'package:gonomad/widgets/message_card.dart';
