@@ -18,7 +18,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-//FirebaseAppCheck.instance.activate();
+//FirebaseAppCheck.instance.activate();39
   runApp(
     const riverpod.ProviderScope(
       child: MyApp(),

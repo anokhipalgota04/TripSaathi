@@ -44,4 +44,6 @@ class AuthRepository {
       print(e);
     }
   }
+
+  String? getCurrentUserId() {}
 }

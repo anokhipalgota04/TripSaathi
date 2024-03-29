@@ -49,7 +49,8 @@ class _FollowingCountState extends State<FollowingCount> {
           }
 
           // Fetch the following list of the user
-          List<dynamic> following = snapshot.data!.get('following') ?? [];
+       List<dynamic> following = snapshot.data!.get('following') ?? [];
+     
 
           if (following.isEmpty) {
             return const Center(

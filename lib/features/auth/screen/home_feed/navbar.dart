@@ -80,7 +80,7 @@ class _PersonalFeedState extends State<PersonalFeed> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                   child: Container(
-                    height: 85,
+                    height: 70,
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.4),
                       // boxShadow: [
@@ -93,35 +93,45 @@ class _PersonalFeedState extends State<PersonalFeed> {
                       // ],
                     ),
                     child: CupertinoTabBar(
-                      height: 85,
+                      height: 65,
                       // border: Border(
                       //   top: BorderSide(
                       //     color: Colors.grey.withOpacity(0.2),
                       //     width: 0.5,
                       //   ),
                       // ),
-                      iconSize: 32,
+                      iconSize: 28,
                       backgroundColor: Colors.transparent,
                       items: [
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.home_rounded,
-                              color:
-                                  _page == 0 ? Colors.black : Colors.black54),
+                          icon: Center(
+                            child: _page == 0
+                                ? Icon(Icons.home,
+                                    color: Color.fromARGB(255, 6, 6, 6))
+                                : Icon(Icons.home_outlined,
+                                    color: Color.fromARGB(255, 6, 6, 6)),
+                          ),
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.trending_up_rounded,
-                              color:
-                                  _page == 1 ? Colors.black : Colors.black54),
+                          icon: _page == 1
+                              ? Icon(Icons.trending_up,
+                                  color: Color.fromARGB(255, 6, 6, 6))
+                              : Icon(Icons.trending_up_rounded,
+                                  color: Color.fromARGB(255, 6, 6, 6)),
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.add_box_outlined,
-                              color:
-                                  _page == 2 ? Colors.black : Colors.black54),
+                          icon: _page == 2
+                              ? Icon(Icons.add_box,
+                                  color: Color.fromARGB(255, 6, 6, 6))
+                              : Icon(Icons.add_box_outlined,
+                                  color: Color.fromARGB(255, 6, 6, 6)),
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.map,
-                              color:
-                                  _page == 3 ? Colors.black : Colors.black54),
+                          icon: _page == 3
+                              ? Icon(Icons.location_on,
+                                  color: Color.fromARGB(255, 6, 6, 6))
+                              : Icon(Icons.location_on_outlined,
+                                  color: Color.fromARGB(255, 6, 6, 6)),
                         ),
                         BottomNavigationBarItem(
                           icon: CircleAvatar(

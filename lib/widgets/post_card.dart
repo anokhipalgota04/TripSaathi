@@ -23,6 +23,8 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
   late Stream<QuerySnapshot> commentsStream;
+  late UserProvider _userProvider;
+  User? _user;
 
   @override
   void initState() {
@@ -35,8 +37,35 @@ class _PostCardState extends State<PostCard> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userProvider = Provider.of<UserProvider>(context);
+    _user = _userProvider.getUser;
+  }
+
+  void _userProviderListener() {
+    // Trigger a rebuild when user data changes
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void dispose() {
+    // Remove the listener when the widget is disposed
+    _userProvider.removeListener(_userProviderListener);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final User? user = Provider.of<UserProvider>(context).getUser;
+    final UserProvider? userProvider = Provider.of<UserProvider>(context);
+    if (userProvider == null) {
+      // Return a loading indicator or any other widget
+      return CircularProgressIndicator();
+    }
+
+    final User? user = userProvider.getUser;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Card(
@@ -58,7 +87,7 @@ class _PostCardState extends State<PostCard> {
                       radius: 21.0,
                       backgroundImage: imageProvider,
                     ),
-//  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
+                    //  placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while loading
                     errorWidget: (context, url, error) => const Icon(
                         Icons.error), // Widget to show when loading fails
                   ),

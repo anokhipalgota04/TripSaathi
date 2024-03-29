@@ -79,6 +79,13 @@ dependencies:
   google_maps_flutter: ^2.5.3
   location: ^5.0.0
   flutter_polyline_points: ^1.0.0
+  email_otp: ^1.0.4
+  fpdart: ^1.1.0
+  routemaster: ^1.0.1
+  dotted_border: ^2.1.0
+  file_picker: ^6.2.0
+  any_link_preview: ^2.0.0
+  tuple: 2.0.2
 
 dev_dependencies:
   flutter_test:

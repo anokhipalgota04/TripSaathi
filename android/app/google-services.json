@@ -1,10 +1,47 @@
 {
   "project_info": {
     "project_number": "232015512903",
+    "firebase_url": "https://gonomad-28aaa-default-rtdb.firebaseio.com",
     "project_id": "gonomad-28aaa",
     "storage_bucket": "gonomad-28aaa.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232015512903:android:52d51ddd4dcfe9944e7862",
+        "android_client_info": {
+          "package_name": "com.example.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232015512903-i7f4ibjgs1q5rlhhk89t2e2qn52reed2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADcl8BPZdWFe4TmVT0ZJZ8nuqKEJkkGs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232015512903-i7f4ibjgs1q5rlhhk89t2e2qn52reed2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "232015512903-b2b6shbcl8otg568nmgik1vciaaoifll.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gonomad"
+              }
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:232015512903:android:8dea19b7c844263a4e7862",

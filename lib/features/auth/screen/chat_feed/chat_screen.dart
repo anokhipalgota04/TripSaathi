@@ -234,7 +234,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         setState(() => _showEmoji = !_showEmoji);
                       },
                       icon: const Icon(Icons.emoji_emotions,
-                          color: Colors.blueAccent, size: 25)),
+                          color: Color.fromARGB(255, 0, 0, 0), size: 25)),
 
                   Expanded(
                     child: TextField(
@@ -246,7 +246,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                       decoration: const InputDecoration(
                           hintText: 'Type Something...',
-                          hintStyle: TextStyle(color: Colors.blueAccent),
+                          hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                           border: InputBorder.none),
                     ),
                   ),
@@ -269,7 +269,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         }
                       },
                       icon: const Icon(Icons.image,
-                          color: Colors.blueAccent, size: 26)),
+                          color: Color.fromARGB(255, 0, 0, 0), size: 26)),
 
                   //take image from camera button
                   IconButton(
@@ -289,7 +289,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         }
                       },
                       icon: const Icon(Icons.camera_alt_rounded,
-                          color: Colors.blueAccent, size: 26)),
+                          color: Color.fromARGB(255, 0, 0, 0), size: 26)),
 
                   //adding some space
                   SizedBox(width: mq.size.width * .02),

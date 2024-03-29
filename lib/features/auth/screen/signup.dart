@@ -1,8 +1,12 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
 import 'dart:async';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
 import 'package:gonomad/features/auth/screen/login.dart';
@@ -10,6 +14,7 @@ import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -26,11 +31,19 @@ class _SignupScreenState extends State<SignupScreen>
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phonecontroller= TextEditingController();
+  final TextEditingController  _otpcontroller= TextEditingController();
+
+ 
+  
+
+
   Uint8List? _image;
 
   bool _isLoading = false;
   bool _isPasswordVisible = false;
   bool _emailError = false;
+  late String verificationId;
 
   @override
   void initState() {
@@ -59,6 +72,8 @@ class _SignupScreenState extends State<SignupScreen>
     await Future.delayed(const Duration(seconds: 2));
   }
 
+
+ 
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -181,81 +196,133 @@ class _SignupScreenState extends State<SignupScreen>
   }
 
   Widget _buildFormFields(Size screenSize) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          alignment: Alignment.bottomLeft,
-          children: [
-            _image != null
-                ? CircleAvatar(
-                    radius: 64,
-                    backgroundImage: MemoryImage(_image!),
-                  )
-                : const CircleAvatar(
-                    radius: 64,
-                    backgroundImage: AssetImage('assets/images/default.png'),
-                  ),
-            Positioned(
-              bottom: -10,
-              left: 80,
-              child: IconButton(
-                onPressed: selectImage,
-                icon: const Icon(Icons.add_a_photo),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Stack(
+            alignment: Alignment.bottomLeft,
+            children: [
+              _image != null
+                  ? CircleAvatar(
+                      radius: 64,
+                      backgroundImage: MemoryImage(_image!),
+                    )
+                  : const CircleAvatar(
+                      radius: 64,
+                      backgroundImage: AssetImage('assets/images/default.png'),
+                    ),
+              Positioned(
+                bottom: -10,
+                left: 80,
+                child: IconButton(
+                  onPressed: selectImage,
+                  icon: const Icon(Icons.add_a_photo),
+                ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: screenSize.height * 0.032),
-        _buildTextField(
-          hintText: 'Enter Username',
-          suffixIcon: const Icon(Icons.person),
-          onChanged: (value) {
-            // Add your logic here
-          },
-          keyboardType: TextInputType.text,
-          controller: _usernameController,
-        ),
-        SizedBox(height: screenSize.height * 0.022),
-        _buildTextField(
-          hintText: 'Enter Email',
-          errorText: _emailError ? 'Enter a valid email' : null,
-          suffixIcon: const Icon(Icons.email_outlined),
-          onChanged: (_) => _validateEmail(),
-          keyboardType: TextInputType.emailAddress,
-          controller: _emailController,
-        ),
-        SizedBox(height: screenSize.height * 0.022),
-        _buildTextField(
-          hintText: 'Enter Password',
-          suffixIcon: IconButton(
-            icon: Icon(
-                _isPasswordVisible ? Icons.visibility : Icons.visibility_off),
-            onPressed: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
+            ],
           ),
-          onChanged: (_) {},
-          keyboardType: TextInputType.text,
-          controller: _passwordController,
-          obscureText: !_isPasswordVisible,
-        ),
-        SizedBox(height: screenSize.height * 0.022),
-        _buildTextField(
-          hintText: 'Enter Bio',
-          suffixIcon: const Icon(Icons.info),
-          onChanged: (value) {
-            // Add your logic here
-          },
-          keyboardType: TextInputType.text,
-          controller: _bioController,
-        ),
-        SizedBox(height: screenSize.height * 0.022),
-        _buildSignupButton(screenSize),
-        SizedBox(height: screenSize.height * 0.008),
-      ],
+          SizedBox(height: screenSize.height * 0.032),
+          _buildTextField(
+            hintText: 'Enter Username',
+            suffixIcon: const Icon(Icons.person),
+            onChanged: (value) {
+              // Add your logic here
+            },
+            keyboardType: TextInputType.text,
+            controller: _usernameController,
+          ),
+          SizedBox(height: screenSize.height * 0.022),
+          _buildTextField(
+            hintText: 'Enter Email',
+            errorText: _emailError ? 'Enter a valid email' : null,
+            suffixIcon: const Icon(Icons.email_outlined),
+            onChanged: (_) => _validateEmail(),
+            keyboardType: TextInputType.emailAddress,
+            controller: _emailController,
+          ),
+          SizedBox(height: screenSize.height * 0.022),
+          _buildTextField(
+            hintText: 'Enter Password',
+            suffixIcon: IconButton(
+              icon: Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
+              },
+            ),
+            onChanged: (_) {},
+            keyboardType: TextInputType.text,
+            controller: _passwordController,
+            obscureText: !_isPasswordVisible,
+          ),
+          SizedBox(height: screenSize.height * 0.022),
+          _buildTextField(
+            hintText: 'Enter Bio',
+            suffixIcon: const Icon(Icons.info),
+            onChanged: (value) {
+              // Add your logic here
+            },
+            keyboardType: TextInputType.text,
+            controller: _bioController,
+          ),
+          SizedBox(height: screenSize.height * 0.022),
+          //  _buildTextField(
+          //   hintText: 'Enter Phone number',
+          //   suffixIcon: Icon(Icons.phone),
+          //   onChanged: (_) {},
+          //   keyboardType: TextInputType.text,
+          //   controller: _phonecontroller,
+           
+          // ),
+          //  SizedBox(height: screenSize.height * 0.022),
+          //  ElevatedButton(onPressed: ()async{
+
+          //   await FirebaseAuth.instance.verifyPhoneNumber(verificationCompleted: (PhoneAuthCredential credential){}, 
+          //   verificationFailed: (FirebaseAuthException ex){}, 
+          //   codeSent: (String verificationId, int? ResendToken) {},
+          //    codeAutoRetrievalTimeout:(String verificationid){},
+          //    phoneNumber: _phonecontroller.text.toString()
+             
+          //    );
+          //  },
+          //   child: Text("Verify phone number")),
+          //   SizedBox(height: screenSize.height * 0.022),
+           
+          //  _buildTextField(
+          //   hintText: 'Enter OTP',
+          //   suffixIcon: Icon(Icons.view_agenda),
+          //   onChanged: (_) {},
+          //   keyboardType: TextInputType.number,
+          //   controller: _otpcontroller,
+          // ),
+            
+          //    SizedBox(height: screenSize.height * 0.022),
+          //    ElevatedButton(onPressed: () async{
+
+
+          //     try {
+          //       PhoneAuthCredential credential = 
+          //       await PhoneAuthProvider.credential
+          //       (verificationId: verificationId, 
+          //       smsCode :_otpcontroller.text.toString() );
+          //       FirebaseAuth.instance.signInWithCredential(credential).then((value){
+          //           Text('Phone number verified');
+
+          //       });
+                
+          //     } catch (ex) {
+          //          print("Error verifying OTP: $ex");
+                
+          //     }
+          //    }, child: Text('Verify otp')),
+             
+          _buildSignupButton(screenSize),
+          SizedBox(height: screenSize.height * 0.008),
+        ],
+      ),
     );
   }
 
@@ -313,6 +380,7 @@ class _SignupScreenState extends State<SignupScreen>
         _emailController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty &&
         _bioController.text.isNotEmpty &&
+        
         _image != null;
 
     return InkWell(
@@ -414,12 +482,18 @@ class _SignupScreenState extends State<SignupScreen>
       email: _emailController.text,
       password: _passwordController.text,
       bio: _bioController.text,
+     // phone: _phonecontroller.text,
+    //  otp: _otpcontroller.text,
       file: _image!,
     );
+
+
 
     setState(() {
       _isLoading = false;
     });
+
+
     if (res != 'success') {
       showSnackBar(res, context);
     } else {

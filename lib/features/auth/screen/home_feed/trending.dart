@@ -45,7 +45,7 @@ class TrendingScreen extends StatelessWidget {
               ),
             ),
           ),
-          bottom: TabBar(
+          bottom: const TabBar(
             tabs: [
               Tab(text: 'Today'),
               Tab(text: 'For You'),
@@ -69,7 +69,8 @@ class TodayPosts extends StatelessWidget {
     // Fetch today's date
     DateTime today = DateTime.now();
     DateTime todayStart = DateTime(today.year, today.month, today.day);
-    DateTime todayEnd = DateTime(today.year, today.month, today.day, 23, 59, 59);
+    DateTime todayEnd =
+        DateTime(today.year, today.month, today.day, 23, 59, 59);
 
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
