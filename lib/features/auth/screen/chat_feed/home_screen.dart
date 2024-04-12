@@ -663,7 +663,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     String photoURL = APIs.user.photoURL.toString();
     APIs.getSelfInfo(name, email, photoURL);
 
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController =
+        TabController(length: 1, vsync: this); // Changed length to 1
 
     SystemChannels.lifecycle.setMessageHandler((message) {
       print('Message: $message');
@@ -816,16 +817,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                Tab(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.group),
-                      SizedBox(width: 5),
-                      Text('Groups'),
-                    ],
-                  ),
-                ),
               ],
             ),
             actions: [
@@ -918,34 +909,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
         ),
       ),
-    );
-  }
-
-  void _createGroup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Create Group'),
-          content: const TextField(
-            decoration: InputDecoration(hintText: 'Enter group name'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Create'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
