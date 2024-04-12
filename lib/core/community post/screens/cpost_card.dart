@@ -646,6 +646,9 @@ class CPostCard extends ConsumerWidget {
                     )
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 15,
               )
             ],
           ),

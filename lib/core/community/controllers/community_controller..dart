@@ -171,6 +171,10 @@ final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
 final searchCommunityProvider = StreamProvider.family((ref, String query) {
   return ref.watch(CommunityControllerProvider.notifier).searchCommunity(query);
 });
+final allCommunitiesProvider = StreamProvider<List<Community>>((ref) {
+  final communityController = ref.watch(CommunityControllerProvider.notifier);
+  return communityController.getAllCommunities();
+});
 
 class CommunityController extends StateNotifier<bool> {
   final CommunityRepository _communityRepository;
@@ -225,6 +229,10 @@ class CommunityController extends StateNotifier<bool> {
               else
                 {showSnackBar(context, 'Community Joined Successfully')}
             });
+  }
+
+  Stream<List<Community>> getAllCommunities() {
+    return _communityRepository.getAllCommunities();
   }
 
   Stream<List<Community>> getUserCommunities() {

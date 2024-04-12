@@ -2328,6 +2328,7 @@ import 'package:gonomad/resources/auth_methods.dart';
 import 'package:gonomad/resources/firestore_methods.dart';
 import 'package:gonomad/utils/utils.dart';
 import 'package:gonomad/widgets/follow_button.dart';
+// Adjust the import path as needed
 
 import 'package:tuple/tuple.dart';
 
@@ -2349,12 +2350,13 @@ class _ProfileScreenState extends State<ProfileScreen>
   bool isFollowing = false;
   bool isLoading = false;
   late TabController _tabController;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     getData();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -2436,8 +2438,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             FirebaseAuth.instance.currentUser!.uid == widget.uid
                                 ? Positioned(
                                     top: 10,
-                                    right:
-                                        12, // Adjust this value to position the icon horizontally
+                                    right: 12,
                                     child: Material(
                                       elevation: 4,
                                       shape: CircleBorder(),
@@ -2453,77 +2454,113 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       ),
                                     ),
                                   )
-                                : SizedBox(),
-                            Positioned(
-                              top:
-                                  150, // Adjust this value to position the avatar
-                              left: MediaQuery.of(context).size.width / 2 -
-                                  50, // Center the avatar horizontally
-                              child: Transform.translate(
-                                offset: Offset(0, -50),
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.grey,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                    userData['photoUrl'],
+                                : Positioned(
+                                    top: 10,
+                                    right: 12,
+                                    child: Material(
+                                      elevation: 4,
+                                      shape: CircleBorder(),
+                                      clipBehavior: Clip.antiAlias,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.menu,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () {
+                                          _showBottomDrawerUser(context);
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                  radius: 55,
+                            Positioned(
+                              top: 150,
+                              left: MediaQuery.of(context).size.width / 2 - 50,
+                              child: Hero(
+                                tag:
+                                    'profile_picture_${userData['uid']}', // Unique tag for the hero animation
+                                child: Transform.translate(
+                                  offset: Offset(0, -50),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 4, // Thickness of the border
+                                      ),
+                                    ),
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.grey,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                        userData['photoUrl'],
+                                      ),
+                                      radius: 55,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
+
                         Row(
                           children: [
                             Expanded(
                               child: Column(
                                 children: [
                                   SizedBox(
-                                    height: 60,
+                                    height: 70,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Row(
-                                      // mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      //  crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: buildStateRow(
-                                              Icon(Icons.image_sharp),
-                                              postLen,
-                                            )),
-                                        GestureDetector(
+                                  Center(
+                                    child: Text(
+                                      userData['username'],
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Row(
+                                    // mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    //  crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 20, bottom: 20),
                                           child: buildStateRow(
-                                            Icon(Icons.follow_the_signs),
-                                            followers,
+                                            Icon(Icons.image_sharp),
+                                            postLen,
+                                          )),
+                                      GestureDetector(
+                                        child: buildStateRow(
+                                          Icon(Icons.follow_the_signs),
+                                          followers,
+                                        ),
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    FollowerCount(
+                                                        uid: widget.uid))),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GestureDetector(
+                                          child: buildStateRow(
+                                            Icon(Icons.admin_panel_settings),
+                                            following,
                                           ),
                                           onTap: () => Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      FollowerCount(
-                                                          uid: widget.uid))),
+                                                      FollowingCount(
+                                                        uid: widget.uid,
+                                                      ))),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: GestureDetector(
-                                            child: buildStateRow(
-                                              Icon(Icons.admin_panel_settings),
-                                              following,
-                                            ),
-                                            onTap: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        FollowingCount(
-                                                          uid: widget.uid,
-                                                        ))),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
                                   Row(
                                     mainAxisAlignment:
@@ -2533,6 +2570,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               widget.uid
                                           ? isFollowing
                                               ? FollowButton(
+                                                  text: 'Disconnect',
+                                                  backgroundColor: Colors.grey,
+                                                  borderColor: Colors.black,
+                                                  textColor: Colors.black,
+                                                  function: () async {
+                                                    await FirestoreMethods()
+                                                        .followUser(
+                                                      FirebaseAuth.instance
+                                                          .currentUser!.uid,
+                                                      userData['uid'],
+                                                    );
+                                                    setState(() {
+                                                      isFollowing = false;
+                                                      followers--;
+                                                    });
+                                                  },
+                                                )
+                                              : FollowButton(
                                                   text: 'Connect',
                                                   backgroundColor: Colors.blue,
                                                   borderColor: Colors.grey,
@@ -2551,66 +2606,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                     });
                                                   },
                                                 )
-                                              : FollowButton(
-                                                  text: 'Disconnect',
-                                                  backgroundColor: Colors.grey,
-                                                  borderColor: Colors.black,
-                                                  textColor: Colors.black,
-                                                  function: () async {
-                                                    await FirestoreMethods()
-                                                        .followUser(
-                                                      FirebaseAuth.instance
-                                                          .currentUser!.uid,
-                                                      userData['uid'],
-                                                    );
-                                                    setState(() {
-                                                      isFollowing = false;
-                                                      followers--;
-                                                    });
-                                                  },
-                                                )
                                           : SizedBox()
                                     ],
                                   ),
-                                  // FirebaseAuth.instance.currentUser!.uid ==
-                                  //         widget.uid
-                                  //     ? Container(
-                                  //         padding:
-                                  //             const EdgeInsets.only(top: 2),
-                                  //         child: TextButton(
-                                  //           onPressed: () {
-                                  //             // Navigate to the EditProfileScreen when the button is pressed
-                                  //             Navigator.push(
-                                  //                 context,
-                                  //                 MaterialPageRoute(
-                                  //                   builder: (context) =>
-                                  //                       EditProfileScreen(
-                                  //                           uid: widget.uid),
-                                  //                 ));
-                                  //           },
-                                  //           child: Container(
-                                  //             decoration: BoxDecoration(
-                                  //               color: Colors.blue,
-                                  //               border: Border.all(
-                                  //                 color: Colors.grey,
-                                  //               ),
-                                  //               borderRadius:
-                                  //                   BorderRadius.circular(5),
-                                  //             ),
-                                  //             alignment: Alignment.center,
-                                  //             width: 250,
-                                  //             height: 42,
-                                  //             child: Text(
-                                  //               'Edit Profile',
-                                  //               style: TextStyle(
-                                  //                 color: Colors.white,
-                                  //                 fontWeight: FontWeight.bold,
-                                  //               ),
-                                  //             ),
-                                  //           ),
-                                  //         ),
-                                  //       )
-                                  //     : SizedBox(height: 1)
                                 ],
                               ),
                             ),
@@ -2651,21 +2649,96 @@ class _ProfileScreenState extends State<ProfileScreen>
                     children: [
                       TextButton(
                         onPressed: () {
+                          setState(() {
+                            _selectedIndex = 0;
+                          });
                           _tabController.animateTo(0);
                         },
-                        child: Text('Post'),
+                        style: ButtonStyle(
+                          backgroundColor: _selectedIndex == 0
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(255, 226, 161, 8))
+                              : MaterialStateProperty.all(
+                                  const Color.fromARGB(255, 9, 11, 12)),
+                        ),
+                        child: Text(
+                          'Post',
+                          style: TextStyle(
+                            color: _selectedIndex == 0
+                                ? Colors.white
+                                : Colors.white,
+                          ),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
+                          setState(() {
+                            _selectedIndex = 1;
+                          });
                           _tabController.animateTo(1);
                         },
-                        child: Text('Community'),
+                        style: ButtonStyle(
+                          backgroundColor: _selectedIndex == 1
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(255, 226, 161, 8))
+                              : MaterialStateProperty.all(
+                                  const Color.fromARGB(255, 9, 11, 12)),
+                        ),
+                        child: Text(
+                          'Community',
+                          style: TextStyle(
+                            color: _selectedIndex == 1
+                                ? Colors.white
+                                : Colors.white,
+                          ),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
+                          setState(() {
+                            _selectedIndex = 2;
+                          });
                           _tabController.animateTo(2);
                         },
-                        child: Text('About'),
+                        style: ButtonStyle(
+                          backgroundColor: _selectedIndex == 2
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(255, 226, 161, 8))
+                              : MaterialStateProperty.all(
+                                  const Color.fromARGB(255, 9, 11, 12)),
+                        ),
+                        child: Text(
+                          'About',
+                          style: TextStyle(
+                            color: _selectedIndex == 2
+                                ? Colors.white
+                                : Colors.white,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _selectedIndex =
+                                3; // Change to the index of the "Trips" tab
+                          });
+                          _tabController.animateTo(3);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: _selectedIndex == 3
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(255, 226, 161, 8))
+                              : MaterialStateProperty.all(
+                                  const Color.fromARGB(255, 9, 11, 12)),
+                        ),
+                        child: Text(
+                          'Trips',
+                          style: TextStyle(
+                            color: _selectedIndex == 3
+                                ? Colors.white
+                                : Colors.white,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -2677,7 +2750,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                         Communitypostscreen(
                           uid: userData['uid'],
                         ),
-                        buildaboutus()
+                        buildaboutus(),
+                        TripsTab(),
                       ],
                     ),
                   ),
@@ -2733,63 +2807,154 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget buildaboutus() {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Row(
-        // mainAxisSize: MainAxisSize.max,
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        //  crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Column(children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(
-                userData['username'],
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+          Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color.fromARGB(255, 218, 208, 208)
+                  .withOpacity(0.5), // Adjust the opacity as needed
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: buildStatColumn(postLen, "posts"),
+            ),
+          ),
+
+          SizedBox(
+              height: 20), // Add spacing between the row and column sections
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  child: Container(
+                    height: 150, // Adjust the height as needed
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color.fromARGB(255, 222, 217, 217)
+                          .withOpacity(0.5), // Adjust the opacity as needed
+                    ),
+                    child: buildStatColumn(followers, "followers"),
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FollowerCount(uid: widget.uid),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(top: 1.0),
-              child: Text(
-                userData['bio'],
+              SizedBox(width: 8), // Add spacing between follower and following
+              Expanded(
+                child: GestureDetector(
+                  child: Container(
+                    height: 150, // Adjust the height as needed
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color.fromARGB(255, 210, 205, 205)
+                          .withOpacity(0.5), // Adjust the opacity as needed
+                    ),
+                    child: buildStatColumn(following, "following"),
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FollowingCount(uid: widget.uid),
+                    ),
+                  ),
+                ),
               ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(top: 1.0),
-              child: Text('score = $score'),
-            ),
-          ]),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: buildStatColumn(postLen, "posts"),
+            ],
           ),
-          GestureDetector(
-            child: buildStatColumn(followers, "followers"),
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => FollowerCount(uid: widget.uid))),
+
+          SizedBox(
+              height: 20), // Add spacing between the row and column sections
+
+          Column(
+            children: [
+              Container(
+                height: 30,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromARGB(255, 210, 205, 205)
+                      .withOpacity(0.5), // Adjust the opacity as needed
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Username: ${userData['username']}',
+                      style: const TextStyle(
+                        // fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                height: 30,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromARGB(255, 210, 205, 205)
+                      .withOpacity(0.5), // Adjust the opacity as needed
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Bio: ${userData['bio']}',
+                      style: const TextStyle(
+                        // fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                height: 30,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromARGB(255, 210, 205, 205)
+                      .withOpacity(0.5), // Adjust the opacity as needed
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Score: $score',
+                      style: const TextStyle(
+                        // fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              child: buildStatColumn(following, "following"),
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FollowingCount(
-                            uid: widget.uid,
-                          ))),
-            ),
-          )
         ],
       ),
     );
   }
+
+  void addtrips() {}
 
   void _showBottomDrawer(BuildContext context) {
     showModalBottomSheet(
@@ -2870,6 +3035,62 @@ class _ProfileScreenState extends State<ProfileScreen>
       },
     );
   }
+
+  void _showBottomDrawerUser(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+          child: Container(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.share), // Changed the icon
+                  title: Text('Share this profile'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the bottom drawer
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           Expenses()), // Navigate to Expenses screen
+                    // );
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  leading: Icon(Icons.block),
+                  title: Text('Block User'),
+                  onTap: () {
+                    // Navigate to Settings screen
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           EditProfileScreen(uid: widget.uid),
+                    //     ));
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  leading: Icon(Icons.report),
+                  title: Text('Report User'),
+                  onTap: () {
+                    // Navigate to Settings screen
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => SettingsScreen()),
+                    // );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 Column buildStatColumn(int num, String label) {
@@ -2905,7 +3126,7 @@ Row buildStateRow(
     children: [
       Text(num.toString(),
           style: const TextStyle(
-            fontSize: 10,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
           )),
       icon
@@ -3017,7 +3238,7 @@ class _CommunitypostscreenState extends ConsumerState<Communitypostscreen> {
                                 .where((post) => post.uid == currentUserUid)
                                 .toList();
                             if (userPosts.isEmpty) {
-                              return Center(
+                              return const Center(
                                 child: Text(
                                   "You haven't posted anything in this community.",
                                 ),
@@ -3057,3 +3278,433 @@ class _CommunitypostscreenState extends ConsumerState<Communitypostscreen> {
         );
   }
 }
+
+// class Trip {
+//   final String place;
+//   final List<String> users;
+//   final DateTime timestamp;
+
+//   Trip({
+//     required this.place,
+//     required this.users,
+//     required this.timestamp,
+//   });
+// }
+
+// class TripsTab extends StatefulWidget {
+//   @override
+//   _TripsTabState createState() => _TripsTabState();
+// }
+
+// class _TripsTabState extends State<TripsTab> {
+//   String selectedPlace = '';
+//   List<String> selectedUsers = [];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       padding: EdgeInsets.all(16.0),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           TextField(
+//             decoration: InputDecoration(
+//               labelText: 'Enter a Place',
+//             ),
+//             onChanged: (value) {
+//               setState(() {
+//                 selectedPlace = value;
+//               });
+//             },
+//           ),
+//           SizedBox(height: 16.0),
+//           Text(
+//             'Select Followers and Following Users',
+//             style: TextStyle(fontWeight: FontWeight.bold),
+//           ),
+//           SizedBox(height: 8.0),
+//           // You can manually add followers and following users here
+//           // For simplicity, let's assume you have a list of user IDs
+//           ListView(
+//             shrinkWrap: true,
+//             children: [
+//               // Replace these ListTile widgets with your actual user selection widgets
+//               ListTile(
+//                 title: Text('Follower 1'),
+//                 onTap: () {
+//                   setState(() {
+//                     selectedUsers.add('follower_1_id');
+//                   });
+//                 },
+//               ),
+//               ListTile(
+//                 title: Text('Follower 2'),
+//                 onTap: () {
+//                   setState(() {
+//                     selectedUsers.add('follower_2_id');
+//                   });
+//                 },
+//               ),
+//               // Add more ListTile widgets for additional users as needed
+//             ],
+//           ),
+//           SizedBox(height: 16.0),
+//           ElevatedButton(
+//             onPressed: () async {
+//               // Save trip data to Firebase Firestore
+//               await FirebaseFirestore.instance.collection('trips').add({
+//                 'place': selectedPlace,
+//                 'users': selectedUsers,
+//                 'timestamp': DateTime.now(),
+//               });
+
+//               // Reset selected place and users
+//               setState(() {
+//                 selectedPlace = '';
+//                 selectedUsers.clear();
+//               });
+
+//               // Show a snackbar or toast message to indicate that the trip is saved
+//               ScaffoldMessenger.of(context).showSnackBar(
+//                 SnackBar(
+//                   content: Text('Trip Saved Successfully!'),
+//                 ),
+//               );
+//             },
+//             child: Text('Save Trip'),
+//           ),
+//           SizedBox(height: 16.0),
+//           Text(
+//             'Trips',
+//             style: TextStyle(fontWeight: FontWeight.bold),
+//           ),
+//           SizedBox(height: 8.0),
+//           StreamBuilder<QuerySnapshot>(
+//             stream: FirebaseFirestore.instance.collection('trips').snapshots(),
+//             builder: (context, snapshot) {
+//               if (snapshot.hasData) {
+//                 final trips = snapshot.data!.docs
+//                     .map((doc) => Trip(
+//                           place: doc['place'],
+//                           users: List<String>.from(doc['users']),
+//                           timestamp: (doc['timestamp'] as Timestamp).toDate(),
+//                         ))
+//                     .toList();
+
+//                 return ListView.builder(
+//                   shrinkWrap: true,
+//                   itemCount: trips.length,
+//                   itemBuilder: (context, index) {
+//                     final trip = trips[index];
+//                     return ListTile(
+//                       title: Text(trip.place),
+//                       subtitle: Text('Users: ${trip.users.join(', ')}'),
+//                       trailing: Text('Date: ${trip.timestamp.toString()}'),
+//                     );
+//                   },
+//                 );
+//               } else if (snapshot.hasError) {
+//                 return Text('Error: ${snapshot.error}');
+//               } else {
+//                 return CircularProgressIndicator(); // Show a loading indicator while fetching data
+//               }
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class Trip {
+//   final String place;
+//   final List<String> users;
+//   final DateTime timestamp;
+
+//   Trip({
+//     required this.place,
+//     required this.users,
+//     required this.timestamp,
+//   });
+// }
+
+// class TripsTab extends StatefulWidget {
+//   @override
+//   _TripsTabState createState() => _TripsTabState();
+// }
+
+// class _TripsTabState extends State<TripsTab> {
+//   String selectedPlace = '';
+//   List<String> selectedUsers = [];
+//   final FirebaseAuth _auth = FirebaseAuth.instance;
+//   late final User currentUser;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     currentUser = _auth.currentUser!;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       // Wrap SingleChildScrollView with SizedBox
+//       width: MediaQuery.of(context).size.width, // Specify width
+//       height: MediaQuery.of(context).size.height, // Specify height
+//       child: SingleChildScrollView(
+//         padding: EdgeInsets.all(16.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             TextField(
+//               decoration: InputDecoration(
+//                 labelText: 'Enter a Place',
+//               ),
+//               onChanged: (value) {
+//                 setState(() {
+//                   selectedPlace = value;
+//                 });
+//               },
+//             ),
+//             SizedBox(height: 16.0),
+//             Text(
+//               'Select Followers and Following Users',
+//               style: TextStyle(fontWeight: FontWeight.bold),
+//             ),
+//             SizedBox(height: 8.0),
+//             // Display followers
+//             FollowerCount(uid: currentUser.uid),
+//             SizedBox(height: 16.0),
+//             // Display following users
+//             FollowingCount(uid: currentUser.uid),
+//             SizedBox(height: 16.0),
+//             ElevatedButton(
+//               onPressed: () async {
+//                 // Save trip data to Firebase Firestore
+//                 await FirebaseFirestore.instance.collection('trips').add({
+//                   'place': selectedPlace,
+//                   'users': selectedUsers,
+//                   'timestamp': DateTime.now(),
+//                 });
+
+//                 // Reset selected place and users
+//                 setState(() {
+//                   selectedPlace = '';
+//                   selectedUsers.clear();
+//                 });
+
+//                 // Show a snackbar or toast message to indicate that the trip is saved
+//                 ScaffoldMessenger.of(context).showSnackBar(
+//                   SnackBar(
+//                     content: Text('Trip Saved Successfully!'),
+//                   ),
+//                 );
+//               },
+//               child: Text('Save Trip'),
+//             ),
+//             SizedBox(height: 16.0),
+//             Text(
+//               'Trips',
+//               style: TextStyle(fontWeight: FontWeight.bold),
+//             ),
+//             SizedBox(height: 8.0),
+//             StreamBuilder<QuerySnapshot>(
+//               stream:
+//                   FirebaseFirestore.instance.collection('trips').snapshots(),
+//               builder: (context, snapshot) {
+//                 if (snapshot.hasData) {
+//                   final trips = snapshot.data!.docs
+//                       .map((doc) => Trip(
+//                             place: doc['place'],
+//                             users: List<String>.from(doc['users']),
+//                             timestamp: (doc['timestamp'] as Timestamp).toDate(),
+//                           ))
+//                       .toList();
+
+//                   return ListView.builder(
+//                     shrinkWrap: true,
+//                     itemCount: trips.length,
+//                     itemBuilder: (context, index) {
+//                       final trip = trips[index];
+//                       return ListTile(
+//                         title: Text(trip.place),
+//                         subtitle: Text('Users: ${trip.users.join(', ')}'),
+//                         trailing: Text('Date: ${trip.timestamp.toString()}'),
+//                       );
+//                     },
+//                   );
+//                 } else if (snapshot.hasError) {
+//                   return Text('Error: ${snapshot.error}');
+//                 } else {
+//                   return CircularProgressIndicator(); // Show a loading indicator while fetching data
+//                 }
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class SelectableUserItem extends StatefulWidget {
+//   final String userId;
+//   final String userName;
+//   final bool isSelected;
+//   final ValueChanged<bool> onSelected;
+
+//   const SelectableUserItem({
+//     Key? key,
+//     required this.userId,
+//     required this.userName,
+//     required this.isSelected,
+//     required this.onSelected,
+//   }) : super(key: key);
+
+//   @override
+//   _SelectableUserItemState createState() => _SelectableUserItemState();
+// }
+
+// class _SelectableUserItemState extends State<SelectableUserItem> {
+//   bool _isSelected = false;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _isSelected = widget.isSelected;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return CheckboxListTile(
+//       title: Text(widget.userName),
+//       value: _isSelected,
+//       onChanged: (value) {
+//         setState(() {
+//           _isSelected = value!;
+//         });
+//         widget.onSelected(value!);
+//       },
+//     );
+//   }
+// }
+
+// class FollowerList extends StatelessWidget {
+//   final List<String> followerIds;
+//   final ValueChanged<String> onSelected;
+
+//   const FollowerList({
+//     Key? key,
+//     required this.followerIds,
+//     required this.onSelected,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       shrinkWrap: true,
+//       itemCount: followerIds.length,
+//       itemBuilder: (context, index) {
+//         String userId = followerIds[index];
+//         // You can fetch the username corresponding to userId here
+//         String userName = 'User $userId'; // Replace with actual username
+//         return SelectableUserItem(
+//           userId: userId,
+//           userName: userName,
+//           isSelected: false,
+//           onSelected: (isSelected) {
+//             if (isSelected) {
+//               onSelected(userId);
+//             }
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
+
+// class FollowingList extends StatelessWidget {
+//   final List<String> followingIds;
+//   final ValueChanged<String> onSelected;
+
+//   const FollowingList({
+//     Key? key,
+//     required this.followingIds,
+//     required this.onSelected,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       shrinkWrap: true,
+//       itemCount: followingIds.length,
+//       itemBuilder: (context, index) {
+//         String userId = followingIds[index];
+//         // You can fetch the username corresponding to userId here
+//         String userName = 'User $userId'; // Replace with actual username
+//         return SelectableUserItem(
+//           userId: userId,
+//           userName: userName,
+//           isSelected: false,
+//           onSelected: (isSelected) {
+//             if (isSelected) {
+//               onSelected(userId);
+//             }
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
+
+// class TripsTab extends StatelessWidget {
+//   final List<String> followingIds = [
+//     '1',
+//     '2',
+//     '3'
+//   ]; // Example list of following users
+//   final List<String> followerIds = [
+//     '4',
+//     '5',
+//     '6'
+//   ]; // Example list of follower users
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       padding: EdgeInsets.all(16.0),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             'Select Followers',
+//             style: TextStyle(fontWeight: FontWeight.bold),
+//           ),
+//           SizedBox(height: 8.0),
+//           Text('Followers count: ${followerIds.length}'),
+//           FollowerList(
+//             followerIds: followerIds,
+//             onSelected: (userId) {
+//               print('Selected follower: $userId');
+//               // Handle the selected follower here
+//             },
+//           ),
+//           SizedBox(height: 16.0),
+//           Text(
+//             'Select Following Users',
+//             style: TextStyle(fontWeight: FontWeight.bold),
+//           ),
+//           SizedBox(height: 8.0),
+//           Text('Following count: ${followingIds.length}'),
+//           FollowingList(
+//             followingIds: followingIds,
+//             onSelected: (userId) {
+//               print('Selected following user: $userId');
+//               // Handle the selected following user here
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

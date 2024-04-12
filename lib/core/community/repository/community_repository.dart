@@ -70,6 +70,12 @@ class CommunityRepository {
     }
   }
 
+  Stream<List<Community>> getAllCommunities() {
+    return FirebaseFirestore.instance.collection('communities').snapshots().map(
+        (snapshot) =>
+            snapshot.docs.map((doc) => Community.fromMap(doc.data())).toList());
+  }
+
   Stream<List<Community>> getUserCommunities(String uid) {
     return _communities
         .where('members', arrayContains: uid)
@@ -115,11 +121,34 @@ class CommunityRepository {
   //   });
   // }
 
+  // Stream<List<Community>> searchCommunity(String query) {
+  //   return _communities
+  //       .where(
+  //         'name',
+  //         isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+  //         isLessThan: query.isEmpty
+  //             ? null
+  //             : query.substring(0, query.length - 1) +
+  //                 String.fromCharCode(
+  //                   query.codeUnitAt(query.length - 1) + 1,
+  //                 ),
+  //       )
+  //       .snapshots()
+  //       .map((event) {
+  // List<Community> communities = [];
+  // for (var community in event.docs) {
+  //   communities
+  //       .add(Community.fromMap(community.data() as Map<String, dynamic>));
+  // }
+  // return communities;
+  //   });
+  // }
+
   Stream<List<Community>> searchCommunity(String query) {
     return _communities
         .where(
           'name',
-          isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+          isGreaterThanOrEqualTo: query.isEmpty ? '' : query,
           isLessThan: query.isEmpty
               ? null
               : query.substring(0, query.length - 1) +
@@ -131,8 +160,11 @@ class CommunityRepository {
         .map((event) {
       List<Community> communities = [];
       for (var community in event.docs) {
-        communities
-            .add(Community.fromMap(community.data() as Map<String, dynamic>));
+        var communityData = community.data();
+        if (communityData != null) {
+          communities
+              .add(Community.fromMap(communityData as Map<String, dynamic>));
+        }
       }
       return communities;
     });

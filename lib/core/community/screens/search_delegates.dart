@@ -53,8 +53,64 @@ class SearchCommunityDelegate extends SearchDelegate {
   //       loading: () => const Loader());
   // }
 
+  // @override
+  // Widget buildSuggestions(BuildContext context) {
+  //   return ref.watch(searchCommunityProvider(query)).when(
+  //         data: (communities) {
+  //           return ListView.builder(
+  //             itemCount: communities.length,
+  //             itemBuilder: (BuildContext context, int index) {
+  //               final community = communities[index];
+  //               return ListTile(
+  //                 leading: CircleAvatar(
+  //                   backgroundImage: NetworkImage(community.avator),
+  //                 ),
+  //                 title: Text('r/${community.name}'),
+  //                 onTap: () => navigateToCommunity(context, community.name),
+  //               );
+  //             },
+  //           );
+  //         },
+  //         error: (error, StackTrace) => ErrorText(error: error.toString()),
+  //         loading: () => const Loader(),
+  //       );
+  // }
+
+  void navigateToCommunity(BuildContext context, String communityName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CommunityScreen(name: communityName),
+      ),
+    );
+  }
+
   @override
   Widget buildSuggestions(BuildContext context) {
+    // Fetch all communities when the query is empty
+    if (query.isEmpty) {
+      return ref.watch(allCommunitiesProvider).when(
+            data: (communities) {
+              return ListView.builder(
+                itemCount: communities.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final community = communities[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(community.avator),
+                    ),
+                    title: Text('r/${community.name}'),
+                    onTap: () => navigateToCommunity(context, community.name),
+                  );
+                },
+              );
+            },
+            error: (error, StackTrace) => ErrorText(error: error.toString()),
+            loading: () => const Loader(),
+          );
+    }
+
+    // Show search results based on query
     return ref.watch(searchCommunityProvider(query)).when(
           data: (communities) {
             return ListView.builder(
@@ -74,14 +130,5 @@ class SearchCommunityDelegate extends SearchDelegate {
           error: (error, StackTrace) => ErrorText(error: error.toString()),
           loading: () => const Loader(),
         );
-  }
-
-  void navigateToCommunity(BuildContext context, String communityName) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CommunityScreen(name: communityName),
-      ),
-    );
   }
 }
