@@ -14,10 +14,10 @@ class Trip {
 
 class Interest {
   final String uid;
-  final String name;
+  final List<String> names;
 
   Interest({
     required this.uid,
-    required this.name,
+    required this.names,
   });
 }

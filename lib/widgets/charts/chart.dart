@@ -59,14 +59,7 @@ class Chart extends StatelessWidget {
           height: 180,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            gradient: LinearGradient(
-              colors: [
-                Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                Theme.of(context).colorScheme.primary.withOpacity(0.0)
-              ],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
+            color: Color.fromARGB(255, 13, 65, 117),
           ),
           child: Column(
             children: [
@@ -88,20 +81,14 @@ class Chart extends StatelessWidget {
                 children: buckets
                     .map(
                       (bucket) => Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(
-                        categoryIcons[bucket.category] ?? Icons.error,
-                        color: isDarkMode
-                            ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(0.7),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Icon(
+                              categoryIcons[bucket.category] ?? Icons.error,
+                              color: Colors.white),
+                        ),
                       ),
-                    ),
-                  ),
-                )
+                    )
                     .toList(),
               )
             ],
@@ -124,7 +111,7 @@ class ExpenseBucket {
 
   static ExpenseBucket forCategory(List<Expense> expenses, Category category) {
     final categoryExpenses =
-    expenses.where((expense) => expense.category == category).toList();
+        expenses.where((expense) => expense.category == category).toList();
     return ExpenseBucket(category, categoryExpenses);
   }
 }

@@ -585,7 +585,14 @@ class AddPostScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Posts'),
+          title: Text(
+            'Posts',
+            style: GoogleFonts.lobster(
+              color: Colors.black,
+              fontSize: 26.0,
+            ),
+          ),
+          centerTitle: true,
           bottom: TabBar(
             tabs: [
               Tab(text: 'Post'),
@@ -733,7 +740,7 @@ class _PostTabState extends State<PostTab> {
                   controller: _descriptionController,
                   decoration: InputDecoration(
                     hintText: "What's on your mind...",
-                    hintStyle: GoogleFonts.kaushanScript(
+                    hintStyle: GoogleFonts.balooPaaji2(
                       color: Colors.black,
                       fontSize: 20,
                     ),

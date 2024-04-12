@@ -27,9 +27,9 @@ class TrendingScreen extends StatelessWidget {
           title: Center(
             child: Text(
               'Trending',
-              style: GoogleFonts.kaushanScript(
+              style: GoogleFonts.lobster(
                 color: Colors.black,
-                fontSize: 25.0,
+                fontSize: 26.0,
               ),
             ),
           ),

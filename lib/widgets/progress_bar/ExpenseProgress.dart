@@ -69,7 +69,8 @@ class _ExpenseProgressCardState extends State<ExpenseProgressCard> {
           totalBudget: _maxBudget,
           tripDuration: _tripDuration,
         );
-        await _firebaseService.updateBudget(budget); // Use updateBudget instead of addBudget
+        await _firebaseService
+            .updateBudget(budget); // Use updateBudget instead of addBudget
       }
     } catch (e) {
       print("Error updating budget: $e");
@@ -85,85 +86,86 @@ class _ExpenseProgressCardState extends State<ExpenseProgressCard> {
 
     return _isLoading
         ? Center(
-      child: CircularProgressIndicator(),
-    )
+            child: CircularProgressIndicator(),
+          )
         : SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Card(
-          elevation: 5,
-          margin: EdgeInsets.all(10),
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Trip Expenses Progress',
-                  style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Total Expenses: Rs ${totalSpent.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        initialValue: _maxBudget.toStringAsFixed(2),
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Total Trip Budget (Rs)',
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _maxBudget = double.tryParse(value) ?? 0.0;
-                            dailyExpense = _maxBudget / _tripDuration;
-                            widget.onMaxBudgetChanged(_maxBudget);
-                          });
-                        },
-                        onEditingComplete:
-                        _updateBudget, // Call _updateBudget when editing is complete
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Card(
+                color: Colors.white,
+                elevation: 5,
+                margin: EdgeInsets.all(10),
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Trip Expenses Progress',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        initialValue: _tripDuration.toString(),
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Trip Duration (days)',
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _tripDuration =
-                                int.tryParse(value) ?? _tripDuration;
-                            dailyExpense = _maxBudget / _tripDuration;
-                          });
-                        },
-                        onEditingComplete:
-                        _updateBudget, // Call _updateBudget when editing is complete
+                      SizedBox(height: 10),
+                      Text(
+                        'Total Expenses: Rs ${totalSpent.toStringAsFixed(2)}',
+                        style: TextStyle(fontSize: 16),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              initialValue: _maxBudget.toStringAsFixed(2),
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'Total Trip Budget (Rs)',
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  _maxBudget = double.tryParse(value) ?? 0.0;
+                                  dailyExpense = _maxBudget / _tripDuration;
+                                  widget.onMaxBudgetChanged(_maxBudget);
+                                });
+                              },
+                              onEditingComplete:
+                                  _updateBudget, // Call _updateBudget when editing is complete
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              initialValue: _tripDuration.toString(),
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'Trip Duration (days)',
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  _tripDuration =
+                                      int.tryParse(value) ?? _tripDuration;
+                                  dailyExpense = _maxBudget / _tripDuration;
+                                });
+                              },
+                              onEditingComplete:
+                                  _updateBudget, // Call _updateBudget when editing is complete
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      _buildProgressBar("Total", totalSpent, totalBudget),
+                      SizedBox(height: 10),
+                      _buildProgressBar("Daily", totalSpent, dailyBudget),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 20),
-                _buildProgressBar("Total", totalSpent, totalBudget),
-                SizedBox(height: 10),
-                _buildProgressBar("Daily", totalSpent, dailyBudget),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 
   Widget _buildProgressBar(String label, double spent, double budget) {

@@ -17,7 +17,8 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime? _selectedDate;
-  Category? _selectedCategory = Category.values.first; // Initialize with the first category
+  Category? _selectedCategory =
+      Category.values.first; // Initialize with the first category
   bool _canAddExpense = false;
   late String _userUid;
 
@@ -89,7 +90,8 @@ class _NewExpenseState extends State<NewExpense> {
       id: FirebaseFirestore.instance.collection('expenses').doc().id,
       title: enteredTitle,
       amount: enteredAmount,
-      date: _selectedDate!.add(Duration(hours: currentTime.hour, minutes: currentTime.minute)),
+      date: _selectedDate!
+          .add(Duration(hours: currentTime.hour, minutes: currentTime.minute)),
       category: _selectedCategory!,
       uid: _userUid,
     );
@@ -134,8 +136,9 @@ class _NewExpenseState extends State<NewExpense> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.lightBlueAccent[50], // Set the background color of the container
+          color: Colors.white, // Set the background color of the container
           child: Card(
+            color: Color.fromARGB(255, 255, 255, 255),
             elevation: 5,
             child: Padding(
               padding: EdgeInsets.all(10),
@@ -149,7 +152,9 @@ class _NewExpenseState extends State<NewExpense> {
                     onSubmitted: (_) => _submitExpenseData(),
                   ),
                   TextField(
-                    decoration: InputDecoration(labelText: 'Amount'),
+                    decoration: InputDecoration(
+                      labelText: 'Amount',
+                    ),
                     controller: _amountController,
                     keyboardType: TextInputType.number,
                     onChanged: (_) => _validateExpense(),
@@ -168,7 +173,8 @@ class _NewExpenseState extends State<NewExpense> {
                         onPressed: _presentDatePicker,
                         child: Text(
                           'Choose Date',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.blue),
                         ),
                       ),
                     ],
@@ -199,9 +205,7 @@ class _NewExpenseState extends State<NewExpense> {
             ),
           ),
         ),
-
       ),
     );
   }
 }
-

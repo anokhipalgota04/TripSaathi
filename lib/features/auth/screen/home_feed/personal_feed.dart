@@ -66,9 +66,9 @@ class _FeedScreenState extends State<FeedScreen>
             padding: const EdgeInsets.only(left: 25),
             child: Text(
               'Tripsaathi',
-              style: GoogleFonts.kaushanScript(
+              style: GoogleFonts.lobster(
                 color: Colors.black,
-                fontSize: 32.0,
+                fontSize: 26.0,
               ),
             ),
           ),
@@ -152,6 +152,44 @@ class _FeedScreenState extends State<FeedScreen>
     );
   }
 
+  // Widget _buildFollowingTab() {
+  //   if (uid == null) {
+  //     return const SizedBox(); // Return an empty widget if uid is null
+  //   }
+  //   return StreamBuilder<DocumentSnapshot>(
+  //     stream:
+  //         FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
+  //     builder: (context, userSnapshot) {
+  //       if (userSnapshot.connectionState == ConnectionState.waiting) {
+  //         return const Center(child: CircularProgressIndicator());
+  //       }
+  //       if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
+  //         return const Center(child: Text('User data not found.'));
+  //       }
+  //       List<dynamic> followingList = userSnapshot.data!.get('following') ?? [];
+  //       return StreamBuilder<QuerySnapshot>(
+  //         stream: FirebaseFirestore.instance
+  //             .collection('posts')
+  //             .where('uid', whereIn: followingList)
+  //             .orderBy('datePublished', descending: true)
+  //             .snapshots(),
+  //         builder: (context, postSnapshot) {
+  //           if (postSnapshot.connectionState == ConnectionState.waiting) {
+  //             return const Center(child: CircularProgressIndicator());
+  //           }
+  //           return ListView.builder(
+  //             itemCount: postSnapshot.data!.docs.length,
+  //             itemBuilder: (context, index) {
+  //               final post = postSnapshot.data!.docs[index].data();
+  //               return PostCard(snap: post);
+  //             },
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
+
   Widget _buildFollowingTab() {
     if (uid == null) {
       return const SizedBox(); // Return an empty widget if uid is null
@@ -167,6 +205,16 @@ class _FeedScreenState extends State<FeedScreen>
           return const Center(child: Text('User data not found.'));
         }
         List<dynamic> followingList = userSnapshot.data!.get('following') ?? [];
+        if (followingList.isEmpty) {
+          return Center(
+            child: ElevatedButton(
+              onPressed: () {
+                // Handle the follow action
+              },
+              child: Text('Follow  Users'),
+            ),
+          );
+        }
         return StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('posts')

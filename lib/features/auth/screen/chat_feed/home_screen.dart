@@ -894,17 +894,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   }
                 },
               ),
-              ListView(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.add),
-                    title: const Text('Create Group'),
-                    onTap: () {
-                      _createGroup(context);
-                    },
-                  ),
-                ],
-              ),
             ],
           ),
         ),

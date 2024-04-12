@@ -28,7 +28,11 @@ class _ExpensesState extends State<Expenses> {
     try {
       final User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        final QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('user_expenses').doc(user.uid).collection('expenses').get();
+        final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('user_expenses')
+            .doc(user.uid)
+            .collection('expenses')
+            .get();
         setState(() {
           _registeredExpenses.clear();
           _registeredExpenses.addAll(querySnapshot.docs.map((doc) {
@@ -37,9 +41,10 @@ class _ExpensesState extends State<Expenses> {
               id: doc.id,
               title: data['title'],
               amount: data['amount'],
-              date: (data['date'] as Timestamp).toDate(), // Convert Timestamp to DateTime
+              date: (data['date'] as Timestamp)
+                  .toDate(), // Convert Timestamp to DateTime
               category: ExpenseModel.Category.values.firstWhere(
-                    (e) => e.toString() == 'Category.${data['category']}',
+                (e) => e.toString() == 'Category.${data['category']}',
               ),
               uid: user.uid,
             );
@@ -117,11 +122,14 @@ class _ExpensesState extends State<Expenses> {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          primary: Colors.lightBlueAccent[50], // Change the background color to light blue accent[50]
-        ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            backgroundColor: Color.fromARGB(255, 13, 65, 117),
+            foregroundColor: Colors.white
+
+            // Change the background color to light blue accent[50]
+            ),
         child: Text(text),
       ),
     );
@@ -143,13 +151,11 @@ class _ExpensesState extends State<Expenses> {
           'amount': expense.amount,
           'date': expense.date,
           'category': expense.category.toString().split('.').last,
-        })
-            .then((_) {
+        }).then((_) {
           setState(() {
             _registeredExpenses.add(expense);
           });
-        })
-            .catchError((error) {
+        }).catchError((error) {
           print('Error adding expense: $error');
         });
       }
@@ -172,8 +178,7 @@ class _ExpensesState extends State<Expenses> {
           setState(() {
             _registeredExpenses.remove(expense);
           });
-        })
-            .catchError((error) {
+        }).catchError((error) {
           print('Error removing expense: $error');
         });
       }
@@ -183,21 +188,27 @@ class _ExpensesState extends State<Expenses> {
   }
 
   List<ExpenseModel.Expense> _filterDailyExpenses(DateTime date) {
-    return _registeredExpenses.where((expense) => isSameDay(expense.date, date)).toList();
+    return _registeredExpenses
+        .where((expense) => isSameDay(expense.date, date))
+        .toList();
   }
 
   double _calculateYearlyTotal() {
-    return _registeredExpenses.fold(0.0, (sum, expense) => sum + expense.amount);
+    return _registeredExpenses.fold(
+        0.0, (sum, expense) => sum + expense.amount);
   }
 
   bool isSameDay(DateTime d1, DateTime d2) {
     return d1.year == d2.year && d1.month == d2.month && d1.day == d2.day;
   }
 
-  void _navigateToFilteredExpensesPage(List<ExpenseModel.Expense> filteredExpenses) {
+  void _navigateToFilteredExpensesPage(
+      List<ExpenseModel.Expense> filteredExpenses) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FilteredExpensesPage(filteredExpenses: filteredExpenses, onRemove: _removeExpense)),
+      MaterialPageRoute(
+          builder: (context) => FilteredExpensesPage(
+              filteredExpenses: filteredExpenses, onRemove: _removeExpense)),
     );
   }
 }
