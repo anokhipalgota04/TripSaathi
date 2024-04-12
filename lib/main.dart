@@ -1,24 +1,20 @@
-//import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
-//import 'package:gonomad/features/auth/screen/home_feed/home.dart';
-import 'package:gonomad/features/auth/screen/home_feed/navbar.dart';
-
-import 'package:gonomad/features/auth/screen/login_option_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:gonomad/features/auth/screen/login_option_screen.dart';
+import 'package:gonomad/features/auth/screen/onboarding_screen.dart'; // Import your OnboardingScreen
 import 'package:gonomad/providers/user_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'features/auth/screen/home_feed/navbar.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-//FirebaseAppCheck.instance.activate();39
   runApp(
     const riverpod.ProviderScope(
       child: MyApp(),
@@ -27,13 +23,10 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    // Show the status bar and hide the navigation bar
-    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -51,6 +44,19 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
                 return const PersonalFeed();
+              } else {
+                // Check if onboarding is completed
+                bool isOnboardingCompleted = false; // Change this based on your app's logic
+                if (isOnboardingCompleted) {
+                  // If user is not logged in and onboarding is completed,
+                  // show the BackgroundVideo screen
+                  return const BackgroundVideo();
+                } else {
+                  // If user is not logged in and onboarding is not completed,
+                  // show the onboarding screen
+                  return OnboardingScreen();
+
+                }
               }
             } else if (snapshot.hasError) {
               return const Scaffold(
@@ -59,21 +65,15 @@ class MyApp extends StatelessWidget {
                 ),
               );
             }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
                 ),
-              );
-            }
-            return const BackgroundVideo();
+              ),
+            );
           },
         ),
-
-        //BackgroundVideo(),
-        //InstagramHome(),//MyHomePage(),
       ),
     );
   }
