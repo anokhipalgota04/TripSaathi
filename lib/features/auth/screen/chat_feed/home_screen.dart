@@ -642,7 +642,6 @@ import 'profile_screen.dart';
   }
 */
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -742,7 +741,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
       if (allMessages.isNotEmpty) {
         // If there are messages, return the most recent one
-        return Message.fromJson(allMessages.first.data() as Map<String, dynamic>);
+        return Message.fromJson(
+            allMessages.first.data() as Map<String, dynamic>);
       } else {
         // If there are no messages, return null
         return null;
@@ -784,24 +784,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
             title: _isSearching
                 ? TextField(
-              decoration: const InputDecoration(
-                  border: InputBorder.none, hintText: 'Name, Email, ...'),
-              autofocus: true,
-              style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
-              onChanged: (val) {
-                _searchList.clear();
+                    decoration: const InputDecoration(
+                        border: InputBorder.none, hintText: 'Name, Email, ...'),
+                    autofocus: true,
+                    style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
+                    onChanged: (val) {
+                      _searchList.clear();
 
-                for (var i in _list) {
-                  if (i.name.toLowerCase().contains(val.toLowerCase()) ||
-                      i.email.toLowerCase().contains(val.toLowerCase())) {
-                    _searchList.add(i);
-                    setState(() {
-                      _searchList;
-                    });
-                  }
-                }
-              },
-            )
+                      for (var i in _list) {
+                        if (i.name.toLowerCase().contains(val.toLowerCase()) ||
+                            i.email.toLowerCase().contains(val.toLowerCase())) {
+                          _searchList.add(i);
+                          setState(() {
+                            _searchList;
+                          });
+                        }
+                      }
+                    },
+                  )
                 : const Text('We Chat'),
             bottom: TabBar(
               controller: _tabController,
@@ -842,7 +842,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ProfileScreen(user: APIs.me, uid: '',),
+                      builder: (_) => ProfileScreen(
+                        user: APIs.me,
+                        uid: '',
+                      ),
                     ),
                   );
                 },
@@ -856,7 +859,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute( builder: (_) => PersonList(usersDisplayedInHomeScreen: _list),),
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        PersonList(usersDisplayedInHomeScreen: _list),
+                  ),
                 );
               },
               child: const Icon(Icons.add_comment_rounded),
@@ -866,7 +872,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             controller: _tabController,
             children: [
               ListView.builder(
-                itemCount: _isSearching ? _searchList.length : (_list.isNotEmpty ? _list.length : 1),
+                itemCount: _isSearching
+                    ? _searchList.length
+                    : (_list.isNotEmpty ? _list.length : 1),
                 itemBuilder: (context, index) {
                   if (_isSearching && _searchList.isEmpty) {
                     return ListTile(
@@ -888,12 +896,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                     );
                   } else {
-                    final chatUser = _isSearching ? _searchList[index] : _list[index];
-                    return ChatUserCard(user: chatUser); // Use ChatUserCard here
+                    final chatUser =
+                        _isSearching ? _searchList[index] : _list[index];
+                    return ChatUserCard(
+                        user: chatUser); // Use ChatUserCard here
                   }
                 },
               ),
-
               ListView(
                 children: [
                   ListTile(

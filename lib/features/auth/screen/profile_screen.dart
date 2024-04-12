@@ -2434,7 +2434,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             Container(
                               height: 150,
                               width: double.infinity,
-                              color: Colors.amber,
+                              color: Color.fromARGB(255, 15, 139, 108),
                             ),
                             FirebaseAuth.instance.currentUser!.uid == widget.uid
                                 ? Positioned(
@@ -2486,7 +2486,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       shape: BoxShape.circle,
                                       border: Border.all(
                                         color: Colors.white,
-                                        width: 4, // Thickness of the border
+                                        width: 6, // Thickness of the border
                                       ),
                                     ),
                                     child: CircleAvatar(
@@ -3709,3 +3709,252 @@ class _CommunitypostscreenState extends ConsumerState<Communitypostscreen> {
 //     );
 //   }
 // }
+
+// class TripsTab extends StatefulWidget {
+//   @override
+//   _TripsTabState createState() => _TripsTabState();
+// }
+
+// class _TripsTabState extends State<TripsTab> {
+//   String selectedPlace = '';
+//   String? selectedInterest; // Change selectedInterest to nullable
+//   List<String> interests = [
+//     'Select Interest', // Add initial hint item
+//     'Scuba diving',
+//     'Overland travel',
+//     'Jungle tourism',
+//     'Extreme travel',
+//     'Rock climbing',
+//   ];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       padding: EdgeInsets.all(16.0),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           TextField(
+//             decoration: InputDecoration(
+//               labelText: 'Enter a Place Visited',
+//             ),
+//             onChanged: (value) {
+//               setState(() {
+//                 selectedPlace = value;
+//               });
+//             },
+//           ),
+//           SizedBox(height: 16.0),
+//           Text(
+//             'Select Interests',
+//             style: TextStyle(fontWeight: FontWeight.bold),
+//           ),
+//           SizedBox(height: 8.0),
+//           DropdownButtonFormField<String>(
+//             value: selectedInterest,
+//             onChanged: (value) {
+//               setState(() {
+//                 selectedInterest = value;
+//               });
+//             },
+//             items: interests.map((interest) {
+//               return DropdownMenuItem<String>(
+//                 value: interest,
+//                 child: Text(interest),
+//               );
+//             }).toList(),
+//             decoration: InputDecoration(
+//               labelText: 'Select Interest',
+//               hintText: 'Choose an interest',
+//             ),
+//           ),
+//           SizedBox(height: 16.0),
+//           ElevatedButton(
+//             onPressed: () async {
+//               // Store trip data to Firebase Firestore
+//               await FirebaseFirestore.instance.collection('trip').add({
+//                 'place': selectedPlace,
+//                 'interest': selectedInterest,
+//                 'timestamp': DateTime.now(),
+//               });
+
+//               // Reset selected place and interest
+//               setState(() {
+//                 selectedPlace = '';
+//                 selectedInterest = null;
+//               });
+
+//               // Show a snackbar or toast message to indicate that the trip is saved
+//               ScaffoldMessenger.of(context).showSnackBar(
+//                 SnackBar(
+//                   content: Text('Trip Saved Successfully!'),
+//                 ),
+//               );
+//             },
+//             child: Text('Save Trip'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+class TripsTab extends StatefulWidget {
+  @override
+  _TripsTabState createState() => _TripsTabState();
+}
+
+class _TripsTabState extends State<TripsTab> {
+  String selectedPlace = '';
+  String? selectedInterest;
+  List<String> interests = [
+    'Select Interest',
+    'Scuba diving',
+    'Overland travel',
+    'Jungle tourism',
+    'Extreme travel',
+    'Rock climbing',
+  ];
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  late String currentUserUid;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUserUid();
+  }
+
+  Future<void> _getCurrentUserUid() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUserUid = user.uid;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Enter a Place Visited',
+            ),
+            onChanged: (value) {
+              setState(() {
+                selectedPlace = value;
+              });
+            },
+          ),
+          SizedBox(height: 16.0),
+          Text(
+            'Select Interests',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8.0),
+          DropdownButtonFormField<String>(
+            value: selectedInterest,
+            onChanged: (value) {
+              setState(() {
+                selectedInterest = value;
+              });
+            },
+            items: interests.map((interest) {
+              return DropdownMenuItem<String>(
+                value: interest,
+                child: Text(interest),
+              );
+            }).toList(),
+            decoration: InputDecoration(
+              labelText: 'Select Interest',
+              hintText: 'Choose an interest',
+            ),
+          ),
+          SizedBox(height: 16.0),
+          ElevatedButton(
+            onPressed: () async {
+              // Store trip data to Firebase Firestore
+              await FirebaseFirestore.instance.collection('trips').add({
+                'uid': currentUserUid,
+                'place': selectedPlace,
+                'timestamp': DateTime.now(),
+              });
+
+              // Reset selected place
+              setState(() {
+                selectedPlace = '';
+              });
+
+              // Show a snackbar or toast message to indicate that the trip is saved
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Trip Saved Successfully!'),
+                ),
+              );
+            },
+            child: Text('Save Trip'),
+          ),
+          SizedBox(height: 16.0),
+          ElevatedButton(
+            onPressed: () async {
+              // Add interest to the interest list
+              await FirebaseFirestore.instance.collection('interests').add({
+                'uid': currentUserUid,
+                'name': selectedInterest,
+              });
+
+              // Show a snackbar or toast message to indicate that the interest is added
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Interest Added Successfully!'),
+                ),
+              );
+            },
+            child: Text('Add Interest'),
+          ),
+          SizedBox(height: 32.0),
+          Text(
+            'Trips:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8.0),
+          FutureBuilder<QuerySnapshot>(
+            future: FirebaseFirestore.instance
+                .collection('trips')
+                .where('uid', isEqualTo: currentUserUid)
+                .get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              List<String> trips = [];
+              snapshot.data!.docs.forEach((doc) {
+                trips.add(doc['place']);
+              });
+
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: trips.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(trips[index]),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
