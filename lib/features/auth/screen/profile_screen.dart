@@ -2318,6 +2318,7 @@ import 'package:gonomad/core/community/constants/error.dart';
 import 'package:gonomad/core/community/constants/loader.dart';
 import 'package:gonomad/core/community/controllers/community_controller..dart';
 import 'package:gonomad/features/auth/screen/aboutus_screen.dart';
+import 'package:gonomad/features/auth/screen/expense_feed/expenses.dart';
 import 'package:gonomad/features/auth/screen/login_option_screen.dart';
 import 'package:gonomad/features/auth/screen/setting_Screen.dart';
 import 'package:gonomad/features/followers_list.dart';
@@ -2970,12 +2971,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                   title: Text('Expense Tracker'),
                   onTap: () {
                     Navigator.pop(context); // Close the bottom drawer
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) =>
-                    //           Expenses()), // Navigate to Expenses screen
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              Expenses()), // Navigate to Expenses screen
+                    );
                   },
                 ),
                 Divider(),
