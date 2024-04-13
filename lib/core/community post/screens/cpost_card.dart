@@ -396,7 +396,7 @@ class CPostCard extends ConsumerWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color.fromARGB(255, 255, 251, 251),
           ),
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Row(

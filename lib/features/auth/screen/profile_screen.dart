@@ -2535,7 +2535,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           )),
                                       GestureDetector(
                                         child: buildStateRow(
-                                          Icon(Icons.follow_the_signs),
+                                          Icon(Icons.person),
                                           followers,
                                         ),
                                         onTap: () => Navigator.push(
@@ -2549,7 +2549,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         padding: const EdgeInsets.all(8.0),
                                         child: GestureDetector(
                                           child: buildStateRow(
-                                            Icon(Icons.admin_panel_settings),
+                                            Icon(Icons.person_add_alt_1),
                                             following,
                                           ),
                                           onTap: () => Navigator.push(
