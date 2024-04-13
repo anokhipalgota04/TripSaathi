@@ -141,6 +141,7 @@ import 'package:gonomad/core/community/constants/utils.dart';
 import 'package:gonomad/core/community/repository/community_repository.dart';
 import 'package:gonomad/core/community/repository/storage_repository.dart';
 import 'package:gonomad/models/community_model.dart';
+import 'package:gonomad/models/cpost_model.dart';
 import 'package:routemaster/routemaster.dart';
 
 final userCommunitiesProvider = StreamProvider(
@@ -171,6 +172,11 @@ final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
 final searchCommunityProvider = StreamProvider.family((ref, String query) {
   return ref.watch(CommunityControllerProvider.notifier).searchCommunity(query);
 });
+
+final getCommunityPostsProvider = StreamProvider.family((ref, String name) {
+  return ref.read(CommunityControllerProvider.notifier).getCommunityPosts(name);
+});
+
 final allCommunitiesProvider = StreamProvider<List<Community>>((ref) {
   final communityController = ref.watch(CommunityControllerProvider.notifier);
   return communityController.getAllCommunities();
@@ -303,6 +309,10 @@ class CommunityController extends StateNotifier<bool> {
   // Stream<List<Community>> searchCommunity(String query) {
   //   return _communityRepository.searchCommunityAutoSuggest(query);
   // }
+  Stream<List<Post>> getCommunityPosts(String name) {
+    return _communityRepository.getCommunityPosts(name);
+  }
+
   Stream<List<Community>> searchCommunity(String query) {
     return _communityRepository.searchCommunity(query);
   }
