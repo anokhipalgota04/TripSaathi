@@ -3300,7 +3300,7 @@ class _TripsTabState extends ConsumerState<TripsTab> {
   String selectedPlace = '';
   List<String> selectedInterests = [];
   List<String> interests = [
-    'Select Interest',
+    'Sky Diving',
     'Scuba diving',
     'Overland travel',
     'Jungle tourism',

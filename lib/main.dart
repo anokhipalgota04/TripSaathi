@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
                 return const PersonalFeed();
               } else {
                 // Check if onboarding is completed
-                bool isOnboardingCompleted = false; // Change this based on your app's logic
+                bool isOnboardingCompleted =
+                    false; // Change this based on your app's logic
                 if (isOnboardingCompleted) {
                   // If user is not logged in and onboarding is completed,
                   // show the BackgroundVideo screen
@@ -55,7 +56,6 @@ class MyApp extends StatelessWidget {
                   // If user is not logged in and onboarding is not completed,
                   // show the onboarding screen
                   return OnboardingScreen();
-
                 }
               }
             } else if (snapshot.hasError) {
