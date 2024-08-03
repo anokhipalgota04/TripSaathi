@@ -322,6 +322,6 @@ class PostController extends StateNotifier<bool> {
         .update({'score': newScore});
 
     // Optionally, update the local user data as well
-    userData!['score'] = newScore;
+    userData['score'] = newScore;
   }
 }

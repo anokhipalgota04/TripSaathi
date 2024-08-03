@@ -23,7 +23,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _nextPage() {
-    if (_currentPageIndex < 2) { // Assuming there are 3 pages including the last one
+    if (_currentPageIndex < 2) {
+      // Assuming there are 3 pages including the last one
       setState(() {
         _currentPageIndex++;
       });
@@ -40,7 +41,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
-  Widget _buildPage({required String image, required String title, required String subtitle}) {
+  Widget _buildPage(
+      {required String image,
+      required String title,
+      required String subtitle}) {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -73,7 +77,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildLastPage({required String image, required String buttonText, required String title, required String subtitle}) {
+  Widget _buildLastPage(
+      {required String image,
+      required String buttonText,
+      required String title,
+      required String subtitle}) {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -181,7 +189,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 _buildLastPage(
                   image: 'assets/images/10.jpeg',
                   title: 'Connect',
-                  subtitle: 'Traveling solo doesn\'t mean traveling alone. It means embarking on a journey where strangers become friends and every moment is an adventure.',
+                  subtitle:
+                      'Traveling solo doesn\'t mean traveling alone. It means embarking on a journey where strangers become friends and every moment is an adventure.',
                   buttonText: 'Get Started',
                 ),
               ],

@@ -35,7 +35,10 @@ class _FollowingCountState extends State<FollowingCount> {
         ),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('users').doc(widget.uid).get(),
+        future: FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.uid)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -49,8 +52,7 @@ class _FollowingCountState extends State<FollowingCount> {
           }
 
           // Fetch the following list of the user
-       List<dynamic> following = snapshot.data!.get('following') ?? [];
-     
+          List<dynamic> following = snapshot.data!.get('following') ?? [];
 
           if (following.isEmpty) {
             return const Center(
@@ -62,7 +64,10 @@ class _FollowingCountState extends State<FollowingCount> {
             itemCount: following.length,
             itemBuilder: (context, index) {
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection('users').doc(following[index]).get(),
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(following[index])
+                    .get(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const ListTile(
@@ -81,7 +86,8 @@ class _FollowingCountState extends State<FollowingCount> {
                     );
                   }
                   // User found, display the follower
-                  Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
+                  Map<String, dynamic> userData =
+                      snapshot.data!.data() as Map<String, dynamic>;
 
                   return InkWell(
                     onTap: () => Navigator.of(context).push(
