@@ -1,4 +1,7 @@
 # TripSaathi
+A travel companion app with Flutter/Dart frontend and Firebase backend.Incorporated robust features including community engagement, real-time chat, expense tracking,live location sharing, and Al-powered chatbot.	Implemented separate admin and client sides for efficient user management and enhanced safety measures tools.Technologies: Flutter Framework, Dart, Firebase
+
+
 
 A new Flutter project.
 
